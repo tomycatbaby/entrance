@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/ui.css">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+	<div
+		style="margin-left: 30px; margin-top: 30px; display: block; float: left; color: blue">
+		<span>角色:</span> <span id="Jurisdiction"></span>
+	</div>
+	<div
+		style="display: block; float: left; margin-left: 380px; margin-top: 10px">
+		<li class="login_item"><input type="text" id="information"
+			name="information" class="search_input" placeholder="请输入学校、省或直辖市">
+	</div>
+	<div style="display: block; float: left; margin-top: 10px">
+		<button class="button_item" onclick="search()">搜索</button>
+	</div>
+	<div class="dropdown">
+		<span id="place"></span> <span id="Name" style="margin-left: 10px"></span>
+		<div class="dropdown-content">
+			<a href="javascript:void(0)" onclick="loginOut()">登出</a>
+		</div>
+	</div>
+	<div
+		style="width: 100%; height: 30px; display: block; float: left; margin-top: 10px; border-bottom: 20px">
+		<hr style="margin-top: 10px;">
+	</div>
+	<div class="op-generaltable-selectip" id="collegechoice">
+		<div id="college" style="margin-left: 50px;font-size: 30px;margin-bottom: 20px">重庆邮电大学</div>
+		<form >
+			<div class="op-generaltable-selectip1">选择生源地：</div>
+			<select id="areas" class="select1"  onchange="areas(this.value)">
+				<option  value="4">请选择</option>
+				<option  value="0">重庆</option>
+				<option value="1">四川</option>
+				<option value="2">广东</option>
+				<option value="3">湖南</option>
+			</select >
+			<div class="op-generaltable-selectip2">选择科属：</div>
+			<select id="subject" class="select2" onchange="subject(this.value)">
+				<option value="science" selected="selected">理科</option>
+				<option value="arts">文科</option>
+			</select>
+		</form>
+	</div>
+	<br>
+	<div
+		style="width: 100%; height: 30px; display: block; float: left; margin-top: 10px; border-bottom: 20px">
+		<hr style="margin-top: 10px;">
+	</div>
+	<table id="td" class="table" style="margin-top: 200px;display:none;">
+		<thead>
+			<tr>
+				<th>年份</th>
+				<th>平均分</th>
+				<th>招生人数</th>
+				<th>省控线</th>
+				<th>录取批次</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+</body>
+<script type="text/javascript">
+	window.onload = function() {
+		$
+				.ajax({
+					type : "POST",
+					dataType : "json",
+					url : "/maven/entrance/getName",
+					data : {},
+					success : function(result) {
+						if (result.resultCode == 200) {
+							var Name = result.user;
+							var Jurisdiction = result.Jurisdiction;
+							var place = result.place
+							document.getElementById("Name").innerText = Name;
+							document.getElementById("Jurisdiction").innerText = Jurisdiction;
+							document.getElementById("place").innerText = place;
+						} else {
+							alert("异常！");
+						}
+						;
+					},
+					error : function() {
+						alert("异常！");
+					}
+				});
+
+	}
+	function search() {
+		var information = $("#information").val();
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/search",
+			data : {
+				information : information
+			},
+			success : function(result) {
+				if (result.resultCode == 200) {
+						addData(result.data);
+						var collegechoice = document.getElementById("collegechoice");
+						collegechoice.style.display = "block";
+						var user = result.user;
+						var i = areasSelect(user.place);
+						var options = document.getElementById("areas").children;
+						options[i].selected = true;
+						if(user.jurisdiction<3){
+							$('#areas').attr("disabled","disabled");
+						}
+				} else {
+					alert("异常！");
+				}
+				;
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
+	function areasSelect(place){
+		var array=["重庆","四川","广东","湖南"];
+		for(var i=0;i<4;i++){
+			if(array[i]==place)
+				return i+1;
+		}
+	}
+	function addData(array){
+		var table = document.getElementById("td");
+		td.style.display="";
+		for(var i =0;i<array.length;i++){
+			var row = table.insertRow(table.rows.length);
+			var c1 = row.insertCell(0);
+			c1.innerHTML = array[i].year;
+			var c2 = row.insertCell(1);
+			c2.innerHTML = array[i].average;
+			var c3 = row.insertCell(2);
+			c3.innerHTML = array[i].enrollment;
+			var c4 = row.insertCell(3);
+			c4.innerHTML = array[i].control_line;
+			var c5 = row.insertCell(4);
+			c5.innerHTML = array[i].batch;
+		}
+		
+	}
+	function loginOut() {
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/loginOut",
+			data : {},
+			success : function(result) {
+				if (result.resultCode == 200) {
+					window.location.href = '/maven/index.html';
+
+				} else {
+					alert("异常！");
+				}
+				;
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
+	function areas(value) {
+		var areas = value; 
+		var subject = $("#subject option:selected").val();
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/search",
+			data : {
+				areas : areas,
+				subject:subject
+			},
+			success : function(result) {
+				if (result.resultCode == 200) {
+
+				} else {
+					alert("异常！");
+				}
+				;
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
+	function subject(value) {
+		var subject = value; 
+		var areas = $("#areas option:selected").val();
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/search",
+			data : {
+				areas : areas,
+				subject:subject
+			},
+			success : function(result) {
+				if (result.resultCode == 200) {
+
+				} else {
+					alert("异常！");
+				}
+				;
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
+</script>
+<script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/popper.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" charset="utf-8"></script>
+</html>

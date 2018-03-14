@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<link rel="stylesheet" type="text/css" href="css/ui.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<style type="text/css">
+</style>
+</head>
+<body>
+	<div class="header">
+		<div style="float: left; padding-left: 200px">
+			<div
+				style="width: 121px; margin-top: 20px; display: block; float: left;">
+				<img src="images/logo.png">
+			</div>
+			<div style="width: 700px; display: block; float: left;">
+				<img src="images/2.jpg" style="width: 100%">
+			</div>
+			<div
+				style="margin-top: 40px; margin-left: 120px; display: block; float: left;">
+				<a id="showlogin" class="login" href="javascript:void(0)"
+					onclick="showLogin()">登录</a> <a id="showregister" class="register"
+					href="javascript:void(0)" onclick="showRegister()">注册</a>
+			</div>
+		</div>
+	</div>
+	<div
+		style="width: 100%; height: 30px; display: block; float: left; margin-top: 50px; border-bottom: 20px">
+		<hr style="margin-top: 20px;">
+	</div>
+	<div id="login"
+		style="width: 500px; height: 300px; display: none; float: left; margin-left: 450px; margin-top: 50px; border: 1px solid #000">
+		<div class="loginwrap">
+			<div class="title">登录</div>
+			<div class="login_form">
+				<form id="loginForm"  method="post" onsubmit="return false">
+				
+					<li class="login_item"><span>用户名：</span> <input type="text"
+						id="username" name="UserName" class="login_input"> <span
+						id="count-msg" class="error"></span></li>
+					<li class="login_item"><span>密 码：</span> <input
+						type="password" id="password" name="password" class="login_input">
+						<span id="password-msg" class="error"></span></li>
+					<li class="login-sub"><input type="submit" name="Submit"
+						value="登录" onclick="login()"/> <input type="reset" name="Reset" value="重置" /></li>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div id="register"
+		style="width: 500px; height: 300px; display: none; float: left; margin-left: 450px; margin-top: 50px; border: 1px solid #000">
+		<div class="loginwrap">
+			<div class="title">注册</div>
+			<div class="login_form">
+				<form>
+					<li class="login_item"><span>用户名：</span> <input type="text"
+						id="Rusername" name="RUserName" class="login_input"> <span
+						id="Rcount-msg" class="error"></span></li>
+					<li class="login_item"><span>密 码：</span> <input
+						type="password" id="Rpassword" name="Rpassword"
+						class="login_input"> <span id="Rpassword-msg"
+						class="error"></span></li>
+					<li class="login_item"><span>重复密码：</span> <input
+						type="password" id="Rrepassword" name="Rrepassword"
+						class="login_input"> <span id="Rrepassword-msg"
+						class="error"></span></li>
+					<li class="login-sub"><input type="submit" name="Submit"
+						value="登录" /> <input type="reset" name="Reset" value="重置" /></li>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+<script type="text/javascript" src="js/canvas-particle.js"
+	charset="utf-8"></script>
+<script type="text/javascript" src="js/login.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+	function login(){
+		var UserName = $("#username").val();
+		var password = $("#password").val();
+		$.ajax({
+			type:"POST",
+			dataType:"json",
+			url:"/maven/entrance/login",
+			data:{username:UserName,password:password},
+			success:function (result){
+				if(result.resultCode==200){
+					 window.location.href='/maven/home.html';
+				}else{
+					alert("用户名或密码错误！");
+				}
+				;
+			},
+			error:function(){
+				alert("用户名或密码错误！");
+			}
+		});
+	}
+	window.onload = function() {
+		var config = {
+			vx : 4,
+			vy : 4,
+			height : 2,
+			width : 2,
+			count : 100,
+			color : "121, 162, 185",
+			stroke : "100, 200, 180",
+			dist : 6000,
+			e_dist : 20000,
+			max_conn : 10
+		}
+		CanvasParticle(config);
+	}
+	function showLogin() {
+		var onlogin = document.getElementById("showlogin");
+		var login = document.getElementById("login");
+		var onregister = document.getElementById("showRegister");
+		var register = document.getElementById("register");
+		if (login.style.display == "none") {
+			login.style.display = "block";
+			register.style.display = "none";
+		} else {
+			login.style.display = "none";
+		}
+	}
+	function showRegister() {
+		var onlogin = document.getElementById("showlogin");
+		var login = document.getElementById("login");
+		var onregister = document.getElementById("showRegister");
+		var register = document.getElementById("register");
+		if (register.style.display == "none") {
+			register.style.display = "block";
+			login.style.display = "none";
+		} else {
+			register.style.display = "none";
+		}
+	}
+</script>
+
+</html>

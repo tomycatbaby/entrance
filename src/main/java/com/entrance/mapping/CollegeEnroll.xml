@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.entrance.dao.CollegeEnrollDao">
+
+	<resultMap type="com.entrance.bean.CollegeEnroll" id="CollegeEnrollResult">
+		<id property="id" column="ID" jdbcType="INTEGER" />
+		<result property="college" column="COLLEGE" jdbcType="VARCHAR" />
+		<result property="areas" column="AREAS" jdbcType="VARCHAR" />
+		<result property="subject" column="SUBJECT" jdbcType="VARCHAR" />
+		<result property="average" column="AVERAGE" jdbcType="INTEGER" />
+		<result property="enrollment" column="ENROLLMENT" jdbcType="INTEGER" />
+		<result property="control_line" column="CONTROL_LINE" jdbcType="INTEGER" />
+		<result property="batch" column="BATCH" jdbcType="VARCHAR" />
+		<result property="year" column="YEAR" jdbcType="INTEGER" />
+	</resultMap>
+	<!-- 根据username查找相关用户 -->
+	<select id="selectCollegeEnroll" parameterType="String"
+		resultMap="CollegeEnrollResult">
+		SELECT
+		ID,COLLEGE,AREAS,SUBJECT,AVERAGE,ENROLLMENT,CONTROL_LINE,BATCH,YEAR
+		FROM college_enroll WHERE college= #{college}
+	</select>
+</mapper>

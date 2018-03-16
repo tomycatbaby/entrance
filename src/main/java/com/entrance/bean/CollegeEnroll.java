@@ -1,7 +1,5 @@
 package com.entrance.bean;
 
-
-
 public class CollegeEnroll {
 	private Integer id;
 	private String college;
@@ -12,8 +10,25 @@ public class CollegeEnroll {
 	private Integer control_line;
 	private String batch;
 	private Integer year;
+	private Integer highest_score;
+	private Integer lowest_score;
 
-	
+	public Integer getHighest_score() {
+		return highest_score;
+	}
+
+	public void setHighest_score(Integer highest_score) {
+		this.highest_score = highest_score;
+	}
+
+	public Integer getLowest_score() {
+		return lowest_score;
+	}
+
+	public void setLowest_score(Integer lowest_score) {
+		this.lowest_score = lowest_score;
+	}
+
 	public Integer getControl_line() {
 		return control_line;
 	}
@@ -90,8 +105,8 @@ public class CollegeEnroll {
 	public String toString() {
 		return "CollegeEnroll [id=" + id + ", college=" + college + ", areas=" + areas + ", subject=" + subject
 				+ ", average=" + average + ", enrollment=" + enrollment + ", control_line=" + control_line + ", batch="
-				+ batch + ", year=" + year + "]";
+				+ batch + ", year=" + year + ", highest_score=" + highest_score + ", lowest_score=" + lowest_score
+				+ "]";
 	}
 
-	
 }

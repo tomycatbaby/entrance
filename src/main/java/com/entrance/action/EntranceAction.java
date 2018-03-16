@@ -107,9 +107,39 @@ public class EntranceAction {
 		String username = (String) session.getAttribute("user");
 		User u = userService.getUser(username);
 		String areas = u.getPlace();
+		String subject = "science";
 		JSONObject json = new JSONObject();
 		try {
-			 List<CollegeEnroll>  collegeEnrollList= collegeEnrollService.find(college);
+			 List<CollegeEnroll>  collegeEnrollList= collegeEnrollService.find(college,areas,subject);
+			PrintWriter out = response.getWriter();
+			json.put("resultCode", 200);
+			json.put("user", u);
+			json.put("data", collegeEnrollList);
+			
+			out.write(json.toJSONString());
+			out.close();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+	}
+	@RequestMapping("/searchBy")
+	public void searchByAreaSubject(HttpServletResponse response, HttpServletRequest request) {
+		response.setContentType("text/html; charset=utf-8");
+		response.setCharacterEncoding("utf-8");
+		String areas = request.getParameter("areas");
+		String subject = request.getParameter("subject");
+		String college = request.getParameter("college");
+		String batch = request.getParameter("batch");
+		String year = request.getParameter("year");
+		System.out.println(batch);
+		System.out.println(year);
+		HttpSession session = request.getSession();
+		String username = (String) session.getAttribute("user");
+		User u = userService.getUser(username);
+		JSONObject json = new JSONObject();
+		try {
+			 List<CollegeEnroll>  collegeEnrollList= collegeEnrollService.searchBy(college,areas,subject,batch,year);
 			PrintWriter out = response.getWriter();
 			json.put("resultCode", 200);
 			json.put("user", u);

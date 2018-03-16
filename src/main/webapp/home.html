@@ -30,20 +30,36 @@
 		<hr style="margin-top: 10px;">
 	</div>
 	<div class="op-generaltable-selectip" id="collegechoice">
-		<div id="college" style="margin-left: 50px;font-size: 30px;margin-bottom: 20px">重庆邮电大学</div>
-		<form >
+		<div id="college"
+			style="margin-left: 50px; font-size: 30px; margin-bottom: 20px">重庆邮电大学</div>
+		<form>
 			<div class="op-generaltable-selectip1">选择生源地：</div>
-			<select id="areas" class="select1"  onchange="areas(this.value)">
-				<option  value="4">请选择</option>
-				<option  value="0">重庆</option>
+			<select id="areas" class="select1" onchange="areaSubject()">
+				<option value="4">不限</option>
+				<option value="0">重庆</option>
 				<option value="1">四川</option>
 				<option value="2">广东</option>
 				<option value="3">湖南</option>
-			</select >
+			</select>
 			<div class="op-generaltable-selectip2">选择科属：</div>
-			<select id="subject" class="select2" onchange="subject(this.value)">
+			<select id="subject" class="select2" onchange="areaSubject()">
 				<option value="science" selected="selected">理科</option>
 				<option value="arts">文科</option>
+			</select>
+			<div class="op-generaltable-selectip2">选择录取批次：</div>
+			<select id="batch" class="select2" onchange="areaSubject()">
+				<option value="3">不限</option>
+				<option value="2">提前批</option>
+				<option value="0">本科一批</option>
+				<option value="1">本科二批</option>
+			</select>
+
+			<div class="op-generaltable-selectip2">选择年份：</div>
+			<select id="year" class="select2" onchange="areaSubject()">
+				<option value="3">不限</option>
+				<option value="0">2015</option>
+				<option value="1">2016</option>
+				<option value="2">2017</option>
 			</select>
 		</form>
 	</div>
@@ -52,20 +68,24 @@
 		style="width: 100%; height: 30px; display: block; float: left; margin-top: 10px; border-bottom: 20px">
 		<hr style="margin-top: 10px;">
 	</div>
-	<table id="td" class="table" style="margin-top: 200px;display:none;">
+	<table id="td" class="table" style="margin-top: 200px; display: none;">
 		<thead>
 			<tr>
 				<th>年份</th>
 				<th>平均分</th>
+				<th>最高分</th>
+				<th>最低分</th>
 				<th>招生人数</th>
 				<th>省控线</th>
 				<th>录取批次</th>
 			</tr>
 		</thead>
 		<tbody>
-			
+
 		</tbody>
 	</table>
+	<div id="d1"
+		style="display: none; float: left; text-align: center; width: 100%; font-size: 30px">暂无数据。。。</div>
 </body>
 <script type="text/javascript">
 	window.onload = function() {
@@ -105,16 +125,24 @@
 			},
 			success : function(result) {
 				if (result.resultCode == 200) {
-						addData(result.data);
-						var collegechoice = document.getElementById("collegechoice");
-						collegechoice.style.display = "block";
-						var user = result.user;
-						var i = areasSelect(user.place);
-						var options = document.getElementById("areas").children;
-						options[i].selected = true;
-						if(user.jurisdiction<3){
-							$('#areas').attr("disabled","disabled");
-						}
+
+					var college = document.getElementById("college");
+					college.innerHTML = information;
+					addData(result.data);
+					var collegechoice = document
+							.getElementById("collegechoice");
+					collegechoice.style.display = "block";
+					//重置科属
+					var subject = document.getElementById("subject").children;
+					subject[0].selected = true;
+					//选中生源地
+					var user = result.user;
+					var i = areasSelect(user.place);
+					var options = document.getElementById("areas").children;
+					options[i].selected = true;
+					if (user.jurisdiction < 3) {
+						$('#areas').attr("disabled", "disabled");
+					}
 				} else {
 					alert("异常！");
 				}
@@ -125,30 +153,42 @@
 			}
 		});
 	}
-	function areasSelect(place){
-		var array=["重庆","四川","广东","湖南"];
-		for(var i=0;i<4;i++){
-			if(array[i]==place)
-				return i+1;
+	function areasSelect(place) {
+		var array = [ "重庆", "四川", "广东", "湖南" ];
+		for (var i = 0; i < 4; i++) {
+			if (array[i] == place)
+				return i + 1;
 		}
 	}
-	function addData(array){
+	function addData(array) {
+		$("#td tr:not(:first)").empty("");
+		var d1 = document.getElementById("d1");
+		if (array == '' || array == null) {
+			d1.style.display = 'block';
+			return;
+		}
+		d1.style.display = 'none';
 		var table = document.getElementById("td");
-		td.style.display="";
-		for(var i =0;i<array.length;i++){
+		td.style.display = "";
+		for (var i = 0; i < array.length; i++) {
 			var row = table.insertRow(table.rows.length);
 			var c1 = row.insertCell(0);
 			c1.innerHTML = array[i].year;
 			var c2 = row.insertCell(1);
 			c2.innerHTML = array[i].average;
-			var c3 = row.insertCell(2);
+			var c6 = row.insertCell(2);
+			c6.innerHTML = array[i].highest_score;
+			var c7 = row.insertCell(3);
+			c7.innerHTML = array[i].lowest_score;
+			var c3 = row.insertCell(4);
 			c3.innerHTML = array[i].enrollment;
-			var c4 = row.insertCell(3);
+			var c4 = row.insertCell(5);
 			c4.innerHTML = array[i].control_line;
-			var c5 = row.insertCell(4);
+			var c5 = row.insertCell(6);
 			c5.innerHTML = array[i].batch;
+
 		}
-		
+
 	}
 	function loginOut() {
 		$.ajax({
@@ -170,44 +210,33 @@
 			}
 		});
 	}
-	function areas(value) {
-		var areas = value; 
+	function areaSubject() {
+
+		var areas = $("#areas option:selected").text();
 		var subject = $("#subject option:selected").val();
+		var college = $("#college").text();
+		var batch = $("#batch option:selected").text();
+		var year = $("#year option:selected").text();
+		if (batch == '不限') {
+			batch = '';
+		}
+		if (year == '不限') {
+			year = '';
+		}
 		$.ajax({
 			type : "POST",
 			dataType : "json",
-			url : "/maven/entrance/search",
+			url : "/maven/entrance/searchBy",
 			data : {
 				areas : areas,
-				subject:subject
+				subject : subject,
+				college : college,
+				batch : batch,
+				year : year
 			},
 			success : function(result) {
 				if (result.resultCode == 200) {
-
-				} else {
-					alert("异常！");
-				}
-				;
-			},
-			error : function() {
-				alert("异常！");
-			}
-		});
-	}
-	function subject(value) {
-		var subject = value; 
-		var areas = $("#areas option:selected").val();
-		$.ajax({
-			type : "POST",
-			dataType : "json",
-			url : "/maven/entrance/search",
-			data : {
-				areas : areas,
-				subject:subject
-			},
-			success : function(result) {
-				if (result.resultCode == 200) {
-
+					addData(result.data);
 				} else {
 					alert("异常！");
 				}

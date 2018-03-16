@@ -14,9 +14,14 @@ public class CollegeEnrollServiceImpl implements CollegeEnrollService {
 	@Autowired
 	private CollegeEnrollDao collegeEnrollDao;
 
-	public List<CollegeEnroll> find(String college) {
+	public List<CollegeEnroll> find(String college, String areas, String subject) {
 
-		return this.collegeEnrollDao.selectCollegeEnroll(college);
+		return this.collegeEnrollDao.selectCollegeEnroll(college, areas, subject);
+	}
+
+	public List<CollegeEnroll> searchBy(String college, String areas, String subject, String batch, String year) {
+
+		return this.collegeEnrollDao.selectBy(college, areas, subject, batch, year);
 	}
 
 }

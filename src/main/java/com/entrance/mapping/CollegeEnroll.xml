@@ -16,21 +16,32 @@
 		<result property="lowest_score" column="LOWEST_SCORE" jdbcType="INTEGER" />
 		<result property="enrollment" column="ENROLLMENT" jdbcType="INTEGER" />
 		<result property="control_line" column="CONTROL_LINE" jdbcType="INTEGER" />
+		<result property="shift_line" column="SHIFT_LINE" jdbcType="INTEGER" />
 		<result property="batch" column="BATCH" jdbcType="VARCHAR" />
 		<result property="year" column="YEAR" jdbcType="INTEGER" />
 	</resultMap>
+	<insert id="insert" parameterType="com.entrance.bean.CollegeEnroll"
+		useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO 
+		college_enroll(college,areas,subject,average,highest_score,lowest_score,enrollment,control_line,shift_line,batch,year)
+		VALUES(#{college},#{areas},#{subject},#{average},#{highest_score},#{lowest_score},#{enrollment},#{control_line},#{shift_line},#{batch},#{year});
+	</insert>
 	<!-- 根据学校，科目，地区查找相关用户 -->
 	<select id="selectCollegeEnroll" resultMap="CollegeEnrollResult">
 		SELECT
-		ID,COLLEGE,AREAS,SUBJECT,AVERAGE,HIGHEST_SCORE,LOWEST_SCORE,ENROLLMENT,CONTROL_LINE,BATCH,YEAR
-		FROM college_enroll WHERE college= #{arg0} and areas=#{arg1} and
+		ID,COLLEGE,AREAS,SUBJECT,AVERAGE,HIGHEST_SCORE,LOWEST_SCORE,SHIFT_LINE,ENROLLMENT,CONTROL_LINE,BATCH,YEAR
+		FROM college_enroll WHERE college like
+		CONCAT('%',#{arg0},'%') and
+		areas=#{arg1} and
 		subject=#{arg2}
 	</select>
 
 	<select id="selectBy" resultMap="CollegeEnrollResult">
 		SELECT
-		ID,COLLEGE,AREAS,SUBJECT,AVERAGE,HIGHEST_SCORE,LOWEST_SCORE,ENROLLMENT,CONTROL_LINE,BATCH,YEAR
-		FROM college_enroll WHERE college= #{arg0} and areas=#{arg1} and
+		ID,COLLEGE,AREAS,SUBJECT,AVERAGE,HIGHEST_SCORE,LOWEST_SCORE,SHIFT_LINE,ENROLLMENT,CONTROL_LINE,BATCH,YEAR
+		FROM college_enroll WHERE college like
+		CONCAT('%',#{arg0},'%') and
+		areas=#{arg1} and
 		subject=#{arg2}
 		<if test="arg3 !=null and arg3!=''">
 			and batch=#{arg3}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<link rel="stylesheet" type="text/css" href="css/ui.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<style type="text/css">
+</style>
+</head>
+<body>
+	
+<form class="form-horizontal" role="form">
+	<div class="form-group">
+		<div class="op-generaltable-selectip3">选择生源地：</div>
+			<select id="areas" >
+				<option value="0">重庆</option>
+				<option value="1">四川</option>
+				<option value="2">广东</option>
+				<option value="3">湖南</option>
+			</select>
+	</div>
+	<div class="form-group">
+		<div class="op-generaltable-selectip3">选择科属：</div>
+			<select id="subject" >
+				<option value="science" selected="selected">理科</option>
+				<option value="arts">文科</option>
+			</select>
+	</div>
+	<div class="form-group">
+		<div class="op-generaltable-selectip3">选择录取批次：</div>
+			<select id="batch">
+				<option value="2">本科提前批</option>
+				<option value="0">本科一批</option>
+				<option value="1">本科二批</option>
+			</select>
+	</div>
+	<div class="form-group">
+		<div class="op-generaltable-selectip3">选择年份：</div>
+			<select id="year" >
+				<option value="0">2015</option>
+				<option value="1">2016</option>
+				<option value="2">2017</option>
+			</select>
+	</div>
+	<div class="form-group">
+		<label for="firstname" class="col-sm-2 control-label">大学</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="college" 
+				   placeholder="请输入大学">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="lastname" class="col-sm-2 control-label">最高分</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="highest_score" 
+				   placeholder="请输入最高分">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="lastname" class="col-sm-2 control-label">平均分</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="average" 
+				   placeholder="请输入平均分">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="lastname" class="col-sm-2 control-label">最低分</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="lowest_score" 
+				   placeholder="请输入最低分">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="lastname" class="col-sm-2 control-label">最低调档线</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="shift_line" 
+				   placeholder="请输入最低调档线">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="lastname" class="col-sm-2 control-label">省控线</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="control_line" 
+				   placeholder="请输入省控线">
+		</div>
+	</div>
+		<div class="form-group">
+		<label for="lastname" class="col-sm-2 control-label">招生人数</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="enrollment" 
+				   placeholder="请输入招生人数">
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<input type="button" class="btn btn-default" onclick="submitForm()" value="提交">
+		</div>
+	</div>
+</form>
+
+</body>
+<script type="text/javascript" src="js/bootstrap.min.js" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+		function submitForm(){
+			var areas = $("#areas option:selected").text();
+			var subject = $("#subject option:selected").text();
+			var college = $("#college").val();
+			var batch = $("#batch option:selected").text();
+			var year = $("#year option:selected").text();
+			var highest_score = $("#highest_score").val();
+			var average = $("#average").val();
+			var lowest_score = $("#lowest_score").val();
+			var shift_line = $("#shift_line").val();
+			var control_line = $("#control_line").val();
+			var enrollment = $("#enrollment").val();
+			$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/addCollege",
+			data : {
+				areas : areas,
+				subject : subject,
+				college : college,
+				batch : batch,
+				year : year,
+				enrollment:enrollment,
+				highest_score:highest_score,
+				average:average,
+				lowest_score:lowest_score,
+				shift_line:shift_line,
+				control_line:control_line
+			},
+			success : function(result) {
+				if (result.resultCode == 200) {
+					reset();
+				} else {
+					reset();
+				}
+				;
+			},
+			error : function() {
+				reset();
+			}
+		});
+		}
+		function reset(){
+			$("#highest_score").val("")
+			$("#average").val("")
+			$("#lowest_score").val("")
+			$("#shift_line").val("")
+			$("#control_line").val("")
+			$("#enrollment").val("")
+			
+		}
+</script>
+
+</html>

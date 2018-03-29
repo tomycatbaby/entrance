@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.entrance.dao.MajorDao">
+
+	<resultMap type="com.entrance.bean.MajorEnroll" id="MajorResult">
+		<id property="id" column="ID" jdbcType="INTEGER" />
+		<result property="major" column="MAJOR" jdbcType="VARCHAR" />
+		<result property="college" column="COLLEGE" jdbcType="VARCHAR" />
+		<result property="areas" column="AREAS" jdbcType="VARCHAR" />
+		<result property="subject" column="SUBJECT" jdbcType="VARCHAR" />
+		<result property="average" column="AVERAGE" jdbcType="INTEGER" />
+		<result property="highest_score" column="HIGHEST_SCORE"
+			jdbcType="INTEGER" />
+		<result property="enrollment" column="ENROLLMENT" jdbcType="INTEGER" />
+		<result property="batch" column="BATCH" jdbcType="VARCHAR" />
+		<result property="year" column="YEAR" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="selectMajor" resultMap="MajorResult">
+		SELECT
+		ID,MAJOR,COLLEGE,AREAS,SUBJECT,AVERAGE,HIGHEST_SCORE,ENROLLMENT,BATCH,YEAR
+		FROM major_enroll WHERE major like
+		CONCAT('%',#{arg0},'%')
+		<if test="arg1 !=null and arg1!=''">
+			and areas=#{arg1}
+		</if>
+		<if test="arg2 !=null and arg2!=''">
+			and subject=#{arg2}
+		</if>
+		<if test="arg3 !=null and arg3!=''">
+			and batch=#{arg3}
+		</if>
+		<if test="arg4 !=null and arg4!=''">
+			and year=#{arg4}
+		</if>
+		limit #{arg5},10
+	</select>
+	<select id="selectCount" resultType="int">
+		SELECT COUNT(*) FROM major_enroll WHERE major like
+		CONCAT('%',#{arg0},'%')
+		<if test="arg1 !=null and arg1!=''">
+			and areas=#{arg1}
+		</if>
+		<if test="arg2 !=null and arg2!=''">
+			and subject=#{arg2}
+		</if>
+		<if test="arg3 !=null and arg3!=''">
+			and batch=#{arg3}
+		</if>
+		<if test="arg4 !=null and arg4!=''">
+			and year=#{arg4}
+		</if>
+	</select>
+</mapper>

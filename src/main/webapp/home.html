@@ -19,6 +19,9 @@
 	<div style="display: block; float: left; margin-top: 10px">
 		<button class="button_item" onclick="search()">搜索</button>
 	</div>
+	<div style="display: block; float: left; margin-top: 10px">
+		<button class="button_item" onclick="searchMajor()">专业</button>
+	</div>
 	<div class="dropdown">
 		<span id="place"></span> <span id="Name" style="margin-left: 10px"></span>
 		<div class="dropdown-content">
@@ -31,7 +34,7 @@
 	</div>
 	<div class="op-generaltable-selectip" id="collegechoice">
 		<div id="college"
-			style="margin-left: 50px; font-size: 30px; margin-bottom: 20px">重庆邮电大学</div>
+			style="margin-left: 50px; font-size: 30px; margin-bottom: 20px; display: none"></div>
 		<form>
 			<div class="op-generaltable-selectip1">选择生源地：</div>
 			<select id="areas" class="select1" onchange="areaSubject()">
@@ -49,7 +52,7 @@
 			<div class="op-generaltable-selectip2">选择录取批次：</div>
 			<select id="batch" class="select2" onchange="areaSubject()">
 				<option value="3">不限</option>
-				<option value="2">提前批</option>
+				<option value="2">本科提前批</option>
 				<option value="0">本科一批</option>
 				<option value="1">本科二批</option>
 			</select>
@@ -62,30 +65,156 @@
 				<option value="2">2017</option>
 			</select>
 		</form>
-	</div>
-	<br>
-	<div
-		style="width: 100%; height: 30px; display: block; float: left; margin-top: 10px; border-bottom: 20px">
-		<hr style="margin-top: 10px;">
-	</div>
-	<table id="td" class="table" style="margin-top: 200px; display: none;">
-		<thead>
-			<tr>
-				<th>年份</th>
-				<th>平均分</th>
-				<th>最高分</th>
-				<th>最低分</th>
-				<th>招生人数</th>
-				<th>省控线</th>
-				<th>录取批次</th>
-			</tr>
-		</thead>
-		<tbody>
+		<table id="td" class="table table-bordered"
+			style="margin-top: 80px; display: none;">
+			<thead>
+				<tr>
+					<th>院校名称</th>
+					<th>平均分</th>
+					<th>最高分</th>
+					<th>最低分</th>
+					<th>招生人数</th>
+					<th>省控线</th>
+					<th>最低调档线</th>
+					<th>录取批次</th>
+					<th>年份</th>
+				</tr>
+			</thead>
+			<tbody>
 
-		</tbody>
-	</table>
-	<div id="d1"
-		style="display: none; float: left; text-align: center; width: 100%; font-size: 30px">暂无数据。。。</div>
+			</tbody>
+		</table>
+		<div id="d1"
+			style="display: none; float: left; text-align: center; width: 100%; font-size: 30px">暂无数据。。。
+		</div>
+	</div>
+	<div class="op-generaltable-selectip" id="areaschoice">
+		<div id="areas"
+			style="margin-left: 50px; font-size: 30px; margin-bottom: 20px; display: none"></div>
+		<form>
+			<div class="op-generaltable-selectip2">选择科属：</div>
+			<select id="areassubject" class="select2" onchange="areasCondition()">
+				<option value="science" selected="selected">理科</option>
+				<option value="arts">文科</option>
+			</select>
+			<div class="op-generaltable-selectip2">选择录取批次：</div>
+			<select id="areasbatch" class="select2" onchange="areasCondition()">
+				<option value="3">不限</option>
+				<option value="0">本科一批</option>
+				<option value="1">本科二批</option>
+			</select>
+			<div class="op-generaltable-selectip2">选择年份：</div>
+			<select id="areasyear" class="select2" onchange="areasCondition()">
+				<option value="3">不限</option>
+				<option value="0">2015</option>
+				<option value="1">2016</option>
+				<option value="2">2017</option>
+			</select>
+		</form>
+		<table id="areastd" class="table table-bordered"
+			style="margin-top: 80px; display: none;">
+			<thead>
+				<tr>
+					<th>省市名称</th>
+					<th>理科</th>
+					<th>省控线</th>
+					<th>录取批次</th>
+					<th>年份</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+		<div id="areasdiv"
+			style="display: none; float: left; text-align: center; width: 100%; font-size: 30px">暂无数据。。。
+		</div>
+	</div>
+
+	<div class="op-generaltable-selectip" id="majorChoice">
+		<div id="major"
+			style="margin-left: 50px; font-size: 30px; margin-bottom: 20px; display: none"></div>
+		<form>
+			<div class="op-generaltable-selectip1">考生所在地：</div>
+			<select id="majorareas" class="select1" onchange="majorCondition()">
+				<option value="4">不限</option>
+				<option value="0">重庆</option>
+				<option value="1">四川</option>
+				<option value="2">广东</option>
+				<option value="3">湖南</option>
+			</select>
+			<div class="op-generaltable-selectip2">文理分科：</div>
+			<select id="majorsubject" class="select2" onchange="majorCondition()">
+				<option value="science" selected="selected">理科</option>
+				<option value="arts">文科</option>
+			</select>
+			<div class="op-generaltable-selectip2">录取批次：</div>
+			<select id="majorbatch" class="select2" onchange="majorCondition()">
+				<option value="3">不限</option>
+				<option value="2">本科提前批</option>
+				<option value="0">本科一批</option>
+				<option value="1">本科二批</option>
+			</select>
+
+			<div class="op-generaltable-selectip2">年份：</div>
+			<select id="majoryear" class="select2" onchange="majorCondition()">
+				<option value="3">不限</option>
+				<option value="0">2015</option>
+				<option value="1">2016</option>
+				<option value="2">2017</option>
+			</select>
+		</form>
+		<table id="majortd" class="table table-bordered"
+			style="margin-top: 50px; display: none;">
+			<thead>
+				<tr>
+					<th>专业名称</th>
+					<th>院校名称</th>
+					<th>最高分</th>
+					<th>平均分</th>
+					<th>招生人数</th>
+					<th>考生类别</th>
+					<th>批次</th>
+					<th>年份</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+		<div id="majord1"
+			style="display: none; float: left; text-align: center; width: 100%; font-size: 30px">暂无数据。。。
+		</div>
+		<div id="pagination"
+			style="width: 100%; display: block; float: left; text-align: center; margin-top: 5px">
+			<span class="sp">共有<span id="number">10</span>条数据
+			</span>
+			<ul class="pagination" style="">
+				<li><a href="javascript:void(0)" onclick="quoPag()">&laquo;</a></li>
+				<li class="active"><a id="a1" href="javascript:void(0)"
+					onclick="pagination(this)">1</a></li>
+				<li><a id="a2" href="javascript:void(0)"
+					onclick="pagination(this)">2</a></li>
+				<li><a id="a3" href="javascript:void(0)"
+					onclick="pagination(this)">3</a></li>
+				<li><a id="a4" href="javascript:void(0)"
+					onclick="pagination(this)">4</a></li>
+				<li><a id="a5" href="javascript:void(0)"
+					onclick="pagination(this)">5</a></li>
+				<li><a href="javascript:void(0)">&raquo;</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="nocollege"
+		style="display: none; float: left; text-align: center; width: 100%; font-size: 30px">没这种大学。。。
+	</div>
+	<div id="noareas"
+		style="display: none; float: left; text-align: center; width: 100%; font-size: 30px">You didn't find anything!。。。
+	</div>
+	<div id="nomajor"
+		style="display: none; float: left; text-align: center; width: 100%; font-size: 30px">没这种专业。。。
+	</div>
+
 </body>
 <script type="text/javascript">
 	window.onload = function() {
@@ -114,50 +243,202 @@
 				});
 
 	}
+	function init() {
+		var collegechoice = document.getElementById("collegechoice");
+		collegechoice.style.display = "none";
+		var majorchoice = document.getElementById("majorChoice");
+		majorchoice.style.display = "none";
+		var areaschoice = document.getElementById("areaschoice");
+		areaschoice.style.display = "none";
+		var nocollege = document.getElementById("nocollege");
+		nocollege.style.display = "none";
+		var nomajor = document.getElementById("nomajor");
+		nomajor.style.display = "none";
+		var noareas = document.getElementById("noareas");
+		noareas.style.display = "none";
+		var d1 = document.getElementById("d1");
+		d1.style.display = "none";
+		var majord1 = document.getElementById("majord1");
+		majord1.style.display = "none";
+		var areasdiv = document.getElementById("areasdiv");
+		areasdiv.style.display = "none";
+	}
 	function search() {
 		var information = $("#information").val();
-		$.ajax({
-			type : "POST",
-			dataType : "json",
-			url : "/maven/entrance/search",
-			data : {
-				information : information
-			},
-			success : function(result) {
-				if (result.resultCode == 200) {
+		init();
+		$
+				.ajax({
+					type : "POST",
+					dataType : "json",
+					url : "/maven/entrance/search",
+					data : {
+						information : information
+					},
+					success : function(result) {
+						if (result.resultCode == 200 && result.city == 0) {
+							var data = result.data;
+							if (data != '' && data != null) {
+								var collegechoice = document
+										.getElementById("collegechoice");
+								collegechoice.style.display = "block";
+								var college = document
+										.getElementById("college");
+								college.innerHTML = information;
+								addData(result.data);
 
-					var college = document.getElementById("college");
-					college.innerHTML = information;
-					addData(result.data);
-					var collegechoice = document
-							.getElementById("collegechoice");
-					collegechoice.style.display = "block";
-					//重置科属
-					var subject = document.getElementById("subject").children;
-					subject[0].selected = true;
-					//选中生源地
-					var user = result.user;
-					var i = areasSelect(user.place);
-					var options = document.getElementById("areas").children;
-					options[i].selected = true;
-					if (user.jurisdiction < 3) {
-						$('#areas').attr("disabled", "disabled");
+								//重置科属
+								var subject = document
+										.getElementById("subject").children;
+								subject[0].selected = true;
+								//重置批次
+								var batch = document.getElementById("batch").children;
+								batch[0].selected = true;
+								//重置年份
+								var year = document.getElementById("year").children;
+								year[0].selected = true;
+								//选中生源地
+								var user = result.user;
+								var i = areasSelect(user.place);
+								var options = document.getElementById("areas").children;
+								options[i].selected = true;
+								if (user.jurisdiction < 3) {
+									$('#areas').attr("disabled", "disabled");
+								}
+
+							} else {
+								var no = document.getElementById("nocollege");
+								no.style.display = 'block';
+							}
+						}else if(result.resultCode == 200 && result.city == 1){
+
+							var data = result.data;
+							if (data != '' && data != null) {
+								var areaschoice = document
+										.getElementById("areaschoice");
+								areaschoice.style.display = "block";
+								var areas = document
+										.getElementById("areas");
+								areas.innerHTML = information;
+								addAreasData(result.data);
+
+								//重置科属
+								var subject = document
+										.getElementById("areassubject").children;
+								subject[0].selected = true;
+								//重置批次
+								var batch = document.getElementById("areasbatch").children;
+								batch[0].selected = true;
+								//重置年份
+								var year = document.getElementById("areasyear").children;
+								year[0].selected = true;
+							} else {
+								var no = document.getElementById("noareas");
+								no.style.display = 'block';
+							}
+						} 
+						else {
+							alert("异常！");
+						}
+						;
+					},
+					error : function() {
+						alert("异常！");
 					}
-				} else {
-					alert("异常！");
-				}
-				;
-			},
-			error : function() {
-				alert("异常！");
-			}
-		});
+				});
+	}
+	function searchMajor() {
+		var majorInformation = $("#information").val();
+		init();
+		$
+				.ajax({
+					type : "POST",
+					dataType : "json",
+					url : "/maven/entrance/searchMajor",
+					data : {
+						major : majorInformation
+					},
+					success : function(result) {
+						if (result.resultCode == 200) {
+							var data = result.data;
+							quo();
+							if (data != '' && data != null) {
+								var count = document.getElementById("number");
+								count.innerHTML = result.count;
+								var majorchoice = document
+										.getElementById("majorChoice");
+								majorchoice.style.display = "block";
+								var major = document.getElementById("major");
+								major.innerHTML = majorInformation;
+								addMajorData(result.data);
+								//重置生源地
+								var areas = document
+										.getElementById("majorareas").children;
+								subject[0].selected = true;
+								//重置科属
+								var subject = document
+										.getElementById("majorsubject").children;
+								subject[0].selected = true;
+								//重置批次
+								var batch = document
+										.getElementById("majorbatch").children;
+								batch[0].selected = true;
+								//重置年份
+								var year = document.getElementById("majoryear").children;
+								year[0].selected = true;
+								//选中生源地
+								var user = result.user;
+								var i = areasSelect(user.place);
+								var options = document
+										.getElementById("majorareas").children;
+								options[i].selected = true;
+								if (user.jurisdiction < 3) {
+									$('#majorareas').attr("disabled",
+											"disabled");
+								}
+
+							} else {
+								var no = document.getElementById("nomajor");
+								no.style.display = 'block';
+							}
+						} else {
+							alert("异常！");
+						}
+						;
+					},
+					error : function() {
+						alert("异常！");
+					}
+				});
 	}
 	function areasSelect(place) {
 		var array = [ "重庆", "四川", "广东", "湖南" ];
 		for (var i = 0; i < 4; i++) {
 			if (array[i] == place)
 				return i + 1;
+		}
+	}
+	function addAreasData(array){
+		$("#areastd tr:not(:first)").empty("");
+		var d1 = document.getElementById("areasdiv");
+		if (array == '' || array == null) {
+			d1.style.display = 'block';
+			return;
+		}
+		d1.style.display = 'none';
+		var table = document.getElementById("areastd");
+		table.style.display = "";
+		for (var i = 0; i < array.length; i++) {
+			var row = table.insertRow(table.rows.length);
+			var c1 = row.insertCell(0);
+			c1.innerHTML = array[i].areas;
+			var c2 = row.insertCell(1);
+			c2.innerHTML = array[i].subject;
+			var c3 = row.insertCell(2);
+			c3.innerHTML = array[i].control_line;
+			var c4 = row.insertCell(3);
+			c4.innerHTML = array[i].batch;
+			var c5 = row.insertCell(4);
+			c5.innerHTML = array[i].year;
 		}
 	}
 	function addData(array) {
@@ -169,26 +450,95 @@
 		}
 		d1.style.display = 'none';
 		var table = document.getElementById("td");
-		td.style.display = "";
+		table.style.display = "";
 		for (var i = 0; i < array.length; i++) {
 			var row = table.insertRow(table.rows.length);
 			var c1 = row.insertCell(0);
-			c1.innerHTML = array[i].year;
+			c1.innerHTML = array[i].college;
 			var c2 = row.insertCell(1);
 			c2.innerHTML = array[i].average;
 			var c6 = row.insertCell(2);
-			c6.innerHTML = array[i].highest_score;
+			if (array[i].highest_score == '' || array[i].highest_score == null) {
+				c6.innerHTML = '--';
+			} else {
+				c6.innerHTML = array[i].highest_score;
+			}
 			var c7 = row.insertCell(3);
-			c7.innerHTML = array[i].lowest_score;
+			if (array[i].lowest_score == '' || array[i].lowest_score == null) {
+				c7.innerHTML = '--';
+			} else {
+				c7.innerHTML = array[i].lowest_score;
+			}
 			var c3 = row.insertCell(4);
-			c3.innerHTML = array[i].enrollment;
+			if (array[i].enrollment == '' || array[i].enrollment == null) {
+				c3.innerHTML = '--';
+			} else {
+				c3.innerHTML = array[i].enrollment;
+			}
 			var c4 = row.insertCell(5);
-			c4.innerHTML = array[i].control_line;
-			var c5 = row.insertCell(6);
+			if (array[i].control_line == '' || array[i].control_line == null) {
+				c4.innerHTML = '--';
+			} else {
+				c4.innerHTML = array[i].control_line;
+			}
+			var c9 = row.insertCell(6);
+			if (array[i].shift_line == '' || array[i].shift_line == null) {
+				c9.innerHTML = '--';
+			} else {
+				c9.innerHTML = array[i].shift_line;
+			}
+			var c5 = row.insertCell(7);
 			c5.innerHTML = array[i].batch;
-
+			var c8 = row.insertCell(8);
+			c8.innerHTML = array[i].year;
 		}
 
+	}
+	function addMajorData(array) {
+		$("#majortd tr:not(:first)").empty("");
+		var d1 = document.getElementById("majord1");
+		if (array == '' || array == null) {
+			d1.style.display = 'block';
+			return;
+		}
+		d1.style.display = 'none';
+		var table = document.getElementById("majortd");
+		table.style.display = "";
+		for (var i = 0; i < array.length; i++) {
+			var row = table.insertRow(table.rows.length);
+			var c1 = row.insertCell(0);
+			c1.innerHTML = array[i].major;
+			var c2 = row.insertCell(1);
+			c2.innerHTML = array[i].college;
+			var c6 = row.insertCell(2);
+			if (array[i].highest_score == '' || array[i].highest_score == null) {
+				c6.innerHTML = '--';
+			} else {
+				c6.innerHTML = array[i].highest_score;
+			}
+			var c7 = row.insertCell(3);
+			if (array[i].lowest_score == '' || array[i].lowest_score == null) {
+				c7.innerHTML = '--';
+			} else {
+				c7.innerHTML = array[i].average;
+			}
+			var c3 = row.insertCell(4);
+			if (array[i].enrollment == '' || array[i].enrollment == null) {
+				c3.innerHTML = '--';
+			} else {
+				c3.innerHTML = array[i].enrollment;
+			}
+			var c4 = row.insertCell(5);
+			if (array[i].subject == '' || array[i].subject == null) {
+				c4.innerHTML = '--';
+			} else {
+				c4.innerHTML = array[i].subject;
+			}
+			var c5 = row.insertCell(6);
+			c5.innerHTML = array[i].batch;
+			var c8 = row.insertCell(7);
+			c8.innerHTML = array[i].year;
+		}
 	}
 	function loginOut() {
 		$.ajax({
@@ -210,15 +560,52 @@
 			}
 		});
 	}
+	function areasCondition(){
+		var areas = $("#areas").text();
+		var subject = $("#areassubject option:selected").text();
+		var batch = $("#areasbatch option:selected").text();
+		var year = $("#areasyear option:selected").text();
+		if (batch == '不限') {
+			batch = '';
+		}
+		if (year == '不限') {
+			year = '';
+		}
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/search",
+			data : {
+				information : areas,
+				subject : subject,
+				batch : batch,
+				year : year
+			},
+			success : function(result) {
+				if (result.resultCode == 200) {
+					addAreasData(result.data)
+				} else {
+					alert("异常！");
+				}
+				;
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
 	function areaSubject() {
 
 		var areas = $("#areas option:selected").text();
-		var subject = $("#subject option:selected").val();
+		var subject = $("#subject option:selected").text();
 		var college = $("#college").text();
 		var batch = $("#batch option:selected").text();
 		var year = $("#year option:selected").text();
 		if (batch == '不限') {
 			batch = '';
+		}
+		if (areas == '不限') {
+			areas = '';
 		}
 		if (year == '不限') {
 			year = '';
@@ -246,6 +633,126 @@
 				alert("异常！");
 			}
 		});
+	}
+	function majorCondition() {
+		var major = $("#major").text();
+		var areas = $("#majorareas option:selected").text();
+		var subject = $("#majorsubject option:selected").text();
+		var batch = $("#majorbatch option:selected").text();
+		var year = $("#majoryear option:selected").text();
+		if (batch == '不限') {
+			batch = '';
+		}
+		if (areas == '不限') {
+			areas = '';
+		}
+		if (year == '不限') {
+			year = '';
+		}
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/searchMajor",
+			data : {
+				areas : areas,
+				subject : subject,
+				major : major,
+				batch : batch,
+				year : year
+			},
+			success : function(result) {
+				if (result.resultCode == 200) {
+					var count = document.getElementById("number");
+					count.innerHTML = result.count;
+					addMajorData(result.data)
+				} else {
+					alert("异常！");
+				}
+				;
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
+	function majorLimit(value) {
+		var major = $("#major").text();
+		var areas = $("#majorareas option:selected").text();
+		var subject = $("#majorsubject option:selected").text();
+		var batch = $("#majorbatch option:selected").text();
+		var year = $("#majoryear option:selected").text();
+		var limit = value;
+		if (batch == '不限') {
+			batch = '';
+		}
+		if (areas == '不限') {
+			areas = '';
+		}
+		if (year == '不限') {
+			year = '';
+		}
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/searchMajor",
+			data : {
+				areas : areas,
+				subject : subject,
+				major : major,
+				batch : batch,
+				year : year,
+				limit : limit
+			},
+			success : function(result) {
+				if (result.resultCode == 200) {
+					var count = document.getElementById("number");
+					count.innerHTML = result.count;
+					addMajorData(result.data)
+				} else {
+					alert("异常！");
+				}
+				;
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
+	function test(la) {
+		var id = parseInt(la.innerHTML);
+		var a1 = document.getElementById("a1");
+		a1.innerHTML = id;
+		var a2 = document.getElementById("a2");
+		a2.innerHTML = id + 1;
+		var a3 = document.getElementById("a3");
+		a3.innerHTML = id + 2;
+		var a4 = document.getElementById("a4");
+		a4.innerHTML = id + 3;
+		var a5 = document.getElementById("a5");
+		a5.innerHTML = id + 4;
+	}
+	function quo() {
+		var a1 = document.getElementById("a1");
+		a1.innerHTML = 1;
+		var a2 = document.getElementById("a2");
+		a2.innerHTML = 2;
+		var a3 = document.getElementById("a3");
+		a3.innerHTML = 3;
+		var a4 = document.getElementById("a4");
+		a4.innerHTML = 4;
+		var a5 = document.getElementById("a5");
+		a5.innerHTML = 5;
+
+	}
+	function quoPag() {
+		quo();
+		majorLimit(0);
+	}
+	function pagination(id) {
+		var limit = parseInt(id.innerHTML);
+		test(id);
+		limit = (limit - 1) * 10;
+		majorLimit(limit);
 	}
 </script>
 <script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>

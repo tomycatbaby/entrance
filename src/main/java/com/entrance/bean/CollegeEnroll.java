@@ -1,6 +1,14 @@
 package com.entrance.bean;
 
 public class CollegeEnroll {
+	@Override
+	public String toString() {
+		return "CollegeEnroll [id=" + id + ", college=" + college + ", areas=" + areas + ", subject=" + subject
+				+ ", average=" + average + ", enrollment=" + enrollment + ", control_line=" + control_line
+				+ ", shift_line=" + shift_line + ", batch=" + batch + ", year=" + year + ", highest_score="
+				+ highest_score + ", lowest_score=" + lowest_score + "]";
+	}
+
 	private Integer id;
 	private String college;
 	private String areas;
@@ -8,10 +16,19 @@ public class CollegeEnroll {
 	private Integer average;
 	private Integer enrollment;
 	private Integer control_line;
+	private Integer shift_line;
 	private String batch;
 	private Integer year;
 	private Integer highest_score;
 	private Integer lowest_score;
+
+	public Integer getShift_line() {
+		return shift_line;
+	}
+
+	public void setShift_line(Integer shift_line) {
+		this.shift_line = shift_line;
+	}
 
 	public Integer getHighest_score() {
 		return highest_score;
@@ -99,14 +116,6 @@ public class CollegeEnroll {
 
 	public void setYear(Integer year) {
 		this.year = year;
-	}
-
-	@Override
-	public String toString() {
-		return "CollegeEnroll [id=" + id + ", college=" + college + ", areas=" + areas + ", subject=" + subject
-				+ ", average=" + average + ", enrollment=" + enrollment + ", control_line=" + control_line + ", batch="
-				+ batch + ", year=" + year + ", highest_score=" + highest_score + ", lowest_score=" + lowest_score
-				+ "]";
 	}
 
 }

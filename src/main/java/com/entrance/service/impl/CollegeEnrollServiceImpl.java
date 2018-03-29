@@ -24,4 +24,9 @@ public class CollegeEnrollServiceImpl implements CollegeEnrollService {
 		return this.collegeEnrollDao.selectBy(college, areas, subject, batch, year);
 	}
 
+	public void addCollege(CollegeEnroll college) {
+		this.collegeEnrollDao.insert(college);
+		
+	}
+
 }

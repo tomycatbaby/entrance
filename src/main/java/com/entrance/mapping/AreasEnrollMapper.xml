@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.entrance.dao.AreasEnrollDao">
+
+	<resultMap type="com.entrance.bean.AreasEnroll" id="AreasEnrollResult">
+		<id property="id" column="ID" jdbcType="INTEGER" />
+		<result property="areas" column="AREAS" jdbcType="VARCHAR" />
+		<result property="subject" column="SUBJECT" jdbcType="VARCHAR" />
+		<result property="control_line" column="CONTROL_LINE" jdbcType="INTEGER" />
+		<result property="batch" column="BATCH" jdbcType="VARCHAR" />
+		<result property="year" column="YEAR" jdbcType="INTEGER" />
+	</resultMap>
+	<!-- 根据科属、批次、年份查省控线 -->
+	<select id="selectAreasEnroll" resultMap="AreasEnrollResult">
+		SELECT
+		ID,AREAS,SUBJECT,CONTROL_LINE,BATCH,YEAR
+		FROM areas_enroll WHERE areas=#{arg0}
+		<if test="arg1 !=null and arg1!=''">
+			and subject=#{arg1}
+		</if>
+		<if test="arg2 !=null and arg2!=''">
+			and batch=#{arg2}
+		</if>
+		<if test="arg3 !=null and arg3!=''">
+			and year=#{arg3}
+		</if>
+	</select>
+
+
+</mapper>

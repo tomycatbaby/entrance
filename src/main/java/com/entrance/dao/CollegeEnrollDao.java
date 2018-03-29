@@ -8,4 +8,6 @@ public interface CollegeEnrollDao {
 	List<CollegeEnroll> selectCollegeEnroll(String college, String areas, String subject);
 
 	List<CollegeEnroll> selectBy(String college, String areas, String subject, String batch, String year);
+	
+	int insert(CollegeEnroll collegeEnroll);
 }

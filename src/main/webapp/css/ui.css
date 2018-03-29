@@ -154,28 +154,41 @@ div, body, a {
 	padding: 0;
 }
 
-.op-generaltable-selectip{
-	width:100%;
+.op-generaltable-selectip {
+	width: 100%;
 	margin-left: 10px;
 	float: left;
 	height: 24px;
 	display: none;
 }
-.op-generaltable-selectip1{
+
+.op-generaltable-selectip1 {
 	margin-left: 10px;
 	float: left;
 	height: 24px;
 }
-.op-generaltable-selectip2{
+
+.op-generaltable-selectip2 {
 	margin-left: 100px;
 	float: left;
 	height: 24px;
 }
-.select1{
+.op-generaltable-selectip3 {
+	margin-left: 180px;
+	float: left;
+	height: 24px;
+}
+.select1 {
 	display: block;
 	float: left;
 }
-.select2{
+
+.select2 {
+	display: block;
+	float: left;
+}
+
+.sp {
 	display: block;
 	float: left;
 }

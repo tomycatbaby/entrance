@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>后台管理</title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/ui.css">
+<script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" charset="utf-8"></script>
+</head>
+<body>
+	<div style="height: 100px;">
+		<div id="home"
+			style="width: 300px; line-height: 90px; font-size: large; margin-bottom: 10px; float: left; margin-left: 50px">
+			<a id="manager" class="manager" href="/maven/home.html">回到首页</a>
+		</div>
+		<div
+			style="width: 650px; font-size: 50px; float: left; line-height: 100px; text-align: center;">后台管理界面</div>
+		<div id="gettime"
+			style="width: 300px; line-height: 90px; font-size: large; margin-bottom: 10px; float: left;"></div>
+	</div>
+	<hr style="margin-bottom: 0">
+	<div
+		style="width: 200px; height: 100%; display: block; margin-left: 200px; float: left; margin: 0; font-size: 20px">
+		<div style="width: 200px; height: 50px; text-align: center">
+			<a class="background" style="" href="javascript:void(0)"
+				onclick="addUser()">新增角色</a>
+		</div>
+		<div style="width: 200px; height: 50px; text-align: center">
+			<a class="background" href="javascript:void(0)"
+				onclick="updateUser()">权限分配</a>
+		</div>
+	</div>
+	<form id="userForm" method="post" class="smart-green"
+		style="display: none">
+		<h1>
+			User Form<span>完善用户信息.</span>
+		</h1>
+		<label> <span>用户名 :</span> <input id="username" type="text"
+			name="username" placeholder="设置登录用户名" />
+		</label> <label> <span>姓名 :</span> <input id="name" type="text"
+			name="name" placeholder="姓名" />
+		</label> <label> <span>角色权限 :</span><select id="jurisdiction"
+			name="jurisdiction">
+				<option value="1">普通用户</option>
+				<option value="2">初级咨询师</option>
+				<option value="3">高级咨询师</option>
+		</select>
+		</label> <label> <span>地区 :</span><select id="place" name="place">
+				<option value="1">重庆</option>
+				<option value="2">北京</option>
+				<option value="3">广东</option>
+				<option value="3">湖南</option>
+				<option value="5">黑龙江</option>
+				<option value="6">广西</option>
+				<option value="7">河南</option>
+				<option value="8">河北</option>
+				<option value="9">山东</option>
+				<option value="10">山西</option>
+				<option value="11">江苏</option>
+				<option value="12">江西</option>
+				<option value="13">西藏</option>
+				<option value="14">安徽</option>
+				<option value="15">浙江</option>
+				<option value="16">福建</option>
+				<option value="17">四川</option>
+		</select>
+		</label> <label> <span>&nbsp;</span> <input type="button"
+			class="button" value="提交" onclick="userForm()" /> <span>&nbsp;</span>
+			<input type="reset" class="button" name="Reset" value="重置" /> <span>&nbsp;</span>
+			<input type="button" class="button" value="关闭" onclick="init()" />
+		</label>
+
+	</form>
+	<form id="userForm1" method="post" class="smart-green"
+		style="display: none">
+		<h1>
+		 Update	User Form<span>修改用户权限信息.</span>
+		</h1>
+		<label> <span>用户名 :</span> <input id="username1" type="text"
+			name="username1" placeholder="设置登录用户名" />
+		</label> <label> <span>姓名 :</span> <input id="name1" type="text"
+			name="name1" placeholder="姓名" />
+		</label> <label> <span>角色权限 :</span><select id="jurisdiction1"
+			name="jurisdiction1">
+				<option value="1">普通用户</option>
+				<option value="2">初级咨询师</option>
+				<option value="3">高级咨询师</option>
+		</select>
+		</label> <label> <span>地区 :</span><select id="place1" name="place1">
+				<option value="1">重庆</option>
+				<option value="2">北京</option>
+				<option value="3">广东</option>
+				<option value="3">湖南</option>
+				<option value="5">黑龙江</option>
+				<option value="6">广西</option>
+				<option value="7">河南</option>
+				<option value="8">河北</option>
+				<option value="9">山东</option>
+				<option value="10">山西</option>
+				<option value="11">江苏</option>
+				<option value="12">江西</option>
+				<option value="13">西藏</option>
+				<option value="14">安徽</option>
+				<option value="15">浙江</option>
+				<option value="16">福建</option>
+				<option value="17">四川</option>
+		</select>
+		</label> <label> <span>&nbsp;</span> <input type="button"
+			class="button" value="提交" onclick="commitUpdateForm()" /> <span>&nbsp;</span>
+			<input type="reset" class="button" name="Reset" value="重置" /> <span>&nbsp;</span>
+			<input type="button" class="button" value="关闭" onclick="init()" />
+		</label>
+
+	</form>
+	<div id="update" style="display: none; float: left;">
+		<div
+			style="display: block; float: left; margin-left: 380px; margin-top: 10px">
+			<li class="login_item"><input type="text" id="information"
+				name="information" class="search_input" placeholder="请输入用户名">
+		</div>
+		<div style="display: block; float: left; margin-top: 10px">
+			<button class="button_item" onclick="search()">搜索</button>
+		</div>
+		<table id="user" class="table table-bordered"
+			style="margin-left: 200px; margin-top: 100px; display: none">
+			<thead>
+				<tr>
+					<th>用户名</th>
+					<th>姓名</th>
+					<th>角色权限</th>
+					<th>地区</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+	</div>
+	<script type="text/javascript">
+		$(function() {
+			setInterval(function() {
+				fnDate();
+			}, 1000);
+			$
+			.ajax({
+				type : "POST",
+				dataType : "json",
+				url : "/maven/entrance/getName",
+				data : {},
+				success : function(result) {
+					if (result.resultCode == 200) {
+						var Jurisdiction = result.Jurisdiction;
+						if (Jurisdiction == '系统管理员') {
+							return;
+						} else {
+							alert("异常！");
+							window.location.href='/maven/index.html';
+						}
+
+					} else {
+						alert("异常！");
+						window.location.href='/maven/index.html';
+					}
+					;
+				},
+				error : function() {
+					alert("异常！");
+					window.location.href='/maven/index.html';
+				}
+			});
+		});
+		function search() {
+			var information = $("#information").val();
+			$.ajax({
+				type : "POST",
+				dataType : "json",
+				url : "/maven/entrance/getUser",
+				data : {
+					username : information
+				},
+				success : function(result) {
+					if (result.resultCode == 200) {
+						document.getElementById("user").style.display = "";
+						addData(result.data);
+					} else {
+						alert("异常！");
+					}
+					;
+				},
+				error : function() {
+					alert("异常！");
+				}
+			});
+		}
+		function addData(array) {
+			$("#user tr:not(:first)").empty("");
+			var table = document.getElementById("user");
+			for (var i = 0; i < array.length; i++) {
+				var row = table.insertRow(table.rows.length);
+				var c1 = row.insertCell(0);
+				c1.innerHTML = "<a href=\"javascript:void(0)\" onclick=\"updateForm('"
+						+ array[i].username
+						+ "','"
+						+ array[i].name
+						+ "','"
+						+ format(array[i].jurisdiction)
+						+ "','"
+						+ array[i].place + "')\">" + array[i].username + "</a>";
+				var c2 = row.insertCell(1);
+				c2.innerHTML = array[i].name;
+				var c3 = row.insertCell(2);
+				c3.innerHTML = format(array[i].jurisdiction);
+				var c4 = row.insertCell(3);
+				c4.innerHTML = array[i].place;
+			}
+		}
+		function format(value) {
+			if (value == 1) {
+				return "普通用户";
+			} else if (value == 2) {
+				return "初级咨询师";
+			} else if (value == 3) {
+				return "高级咨询师";
+			} else {
+				return "系统管理员";
+			}
+
+		}
+
+		function addUser() {
+			init();
+			document.getElementById("userForm").style.display = "";
+		}
+		function init() {
+			document.getElementById("userForm").style.display = "none";
+			document.getElementById("userForm1").style.display = "none";
+			document.getElementById("update").style.display = "none";
+		}
+		function updateForm(username, name, jurisdiction, place) {
+			init();
+			document.getElementById("userForm1").style.display = "";
+			$('#username1').attr("value", username);
+			$('#username1').attr("disabled", "disabled");
+			$('#name1').attr("value", name);
+			$('#name1').attr("disabled", "disabled");
+			$('#jurisdiction1 option').filter(function() {
+				return $(this).text() == jurisdiction;
+			}).attr("selected", true);
+			$('#place1 option').filter(function() {
+				return $(this).text() == place;
+			}).attr("selected", true);
+			
+		}
+		function commitUpdateForm(){
+			debugger
+			var username = $("#username1").val();
+			var jurisdiction = $("#jurisdiction1 option:selected").val();
+			var place = $("#place1 option:selected").text();
+			$
+			.ajax({
+				type : "POST",
+				dataType : "json",
+				url : "/maven/entrance/updateUser",
+				data : {
+					username : username,
+					jurisdiction : jurisdiction,
+					place : place
+				},
+				success : function(result) {
+					if (result.resultCode == 200) {
+						document.getElementById("userForm1").style.display = "none";
+						alert("修改成功");
+					} else {
+						alert("异常！");
+					}
+					;
+				},
+				error : function() {
+					alert("异常！");
+				}
+			});
+		}
+		function updateUser() {
+			init();
+			document.getElementById("update").style.display = "";
+			document.getElementById("user").style.display = "none";
+		}
+		function userForm() {
+			var username = $("#username").val();
+			var name = $("#name").val();
+			var jurisdiction = $("#jurisdiction option:selected").val();
+			var place = $("#place option:selected").text();
+			$
+					.ajax({
+						type : "POST",
+						dataType : "json",
+						url : "/maven/entrance/addUser",
+						data : {
+							username : username,
+							name : name,
+							jurisdiction : jurisdiction,
+							place : place
+						},
+						success : function(result) {
+							if (result.resultCode == 200) {
+								document.getElementById("userForm").style.display = "none";
+								alert("新增成功");
+							} else {
+								alert("异常！");
+							}
+							;
+						},
+						error : function() {
+							alert("异常！");
+						}
+					});
+		}
+		//js 获取当前时间
+		function fnDate() {
+			var oDiv = $('#gettime');
+			var date = new Date();
+			var year = date.getFullYear();//当前年份
+			var month = date.getMonth();//当前月份
+			var data = date.getDate();//天
+			var hours = date.getHours();//小时
+			var minute = date.getMinutes();//分
+			var second = date.getSeconds();//秒
+			var weekday = date.getDay();
+			var time = year + "年" + fnW((month + 1)) + "月" + fnW(data) + "日 "
+					+ weekDay(weekday) + fnW(hours) + ":" + fnW(minute) + ":"
+					+ fnW(second);
+			oDiv[0].innerHTML = time;
+		}
+		//补位 当某个字段不是两位数时补0
+		function fnW(str) {
+			var num;
+			str > 10 ? num = str : num = "0" + str;
+			return num;
+		}
+		function weekDay(weekDay) {
+			var weekday = new Array(7);
+			weekday[0] = "星期日";
+			weekday[1] = "星期一";
+			weekday[2] = "星期二";
+			weekday[3] = "星期三";
+			weekday[4] = "星期四";
+			weekday[5] = "星期五";
+			weekday[6] = "星期六";
+			return weekday[weekDay];
+		}
+	</script>
+</body>
+</html>

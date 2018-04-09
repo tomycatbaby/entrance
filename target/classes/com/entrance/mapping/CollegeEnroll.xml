@@ -20,9 +20,14 @@
 		<result property="batch" column="BATCH" jdbcType="VARCHAR" />
 		<result property="year" column="YEAR" jdbcType="INTEGER" />
 	</resultMap>
+	<resultMap type="com.entrance.bean.CollegeEnroll" id="chooseResult">
+		<result property="college" column="COLLEGE" jdbcType="VARCHAR" />
+		<result property="distance_line" column="DISTANCE_LINE" jdbcType="INTEGER"/>
+		<result property="areas" column="PLACE" jdbcType="VARCHAR"/>
+	</resultMap>
 	<insert id="insert" parameterType="com.entrance.bean.CollegeEnroll"
-		useGeneratedKeys="true" keyProperty="id" >
-		INSERT INTO 
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
 		college_enroll(college,areas,subject,average,highest_score,lowest_score,enrollment,control_line,shift_line,batch,year)
 		VALUES(#{college},#{areas},#{subject},#{average},#{highest_score},#{lowest_score},#{enrollment},#{control_line},#{shift_line},#{batch},#{year});
 	</insert>
@@ -49,7 +54,26 @@
 		<if test="arg4 !=null and arg4!=''">
 			and year=#{arg4}
 		</if>
-
 	</select>
-
+	<select id="choose" resultMap="chooseResult">
+		SELECT college_enroll.college,distance_line,year,college.place from
+		college_enroll
+		INNER JOIN college ON
+		college_enroll.college=college.college
+		<if test="arg4!=null and arg4!=''">
+			AND college_enroll.year=#{arg4}
+		</if>
+		<if test="arg3!=null and arg3!=''">
+			AND college_enroll.batch=#{arg3}
+		</if>
+		<if test="arg2!=null and arg2!=''">
+			AND college_enroll.subject=#{arg2}
+		</if>
+		<if test="arg1!=null and arg1!=''">
+			AND college_enroll.areas=#{arg1}
+		</if>
+		<if test="arg0!=null and arg0!=''">
+			AND college.place=#{arg0}
+		</if>
+	</select>
 </mapper>

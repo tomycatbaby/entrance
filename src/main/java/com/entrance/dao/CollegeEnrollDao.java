@@ -10,4 +10,5 @@ public interface CollegeEnrollDao {
 	List<CollegeEnroll> selectBy(String college, String areas, String subject, String batch, String year);
 	
 	int insert(CollegeEnroll collegeEnroll);
+	List<CollegeEnroll> choose(String place, String areas, String subject, String batch, String year);
 }

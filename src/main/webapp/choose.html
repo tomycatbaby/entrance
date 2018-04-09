@@ -1,0 +1,152 @@
+
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/ui.css">
+<script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" charset="utf-8"></script>
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="home"
+		style="width: 300px; line-height: 90px; font-size: large; margin-bottom: 10px; float: left; margin-left: 50px">
+		<a id="choose" class="manager" href="/maven/home.html">回到首页</a>
+	</div>
+	<form id="chooseForm" method="post" class="smart-green">
+		<h1>
+			Provide Choice<span>根据分数选学校.</span>
+		</h1>
+		<label> <span>考生文理科:</span><select id="subject" name="subject">
+				<option value="1">理科</option>
+				<option value="2">文科</option>
+		</select>
+		</label> <label> <span>考生所在地 :</span><select id="areas" name="areas">
+				<option value="1">重庆</option>
+				<option value="2">北京</option>
+				<option value="3">广东</option>
+				<option value="3">湖南</option>
+				<option value="5">黑龙江</option>
+				<option value="6">广西</option>
+				<option value="7">河南</option>
+				<option value="8">河北</option>
+				<option value="9">山东</option>
+				<option value="10">山西</option>
+				<option value="11">江苏</option>
+				<option value="12">江西</option>
+				<option value="13">西藏</option>
+				<option value="14">安徽</option>
+				<option value="15">浙江</option>
+				<option value="16">福建</option>
+				<option value="17">四川</option>
+		</select>
+		</label> <label> <span>院校层次:</span><select id="batch" name="batch">
+				<option value="1">本科一批</option>
+				<option value="2">本科二批</option>
+		</select>
+
+		</label> <label> <span>分数 :</span> <input id="score" type="text"
+			name="score" placeholder="考生分数" />
+		</label> <label> <span>年份:</span><select id="year" name="year">
+				<option value="2">2016</option>
+				<option value="3">2017</option>
+				<option value="4">2018</option>
+		</select>
+		</label> <label> <span>院校所在地:</span><select id="place" name="place">
+				<option value="1">重庆</option>
+				<option value="2">北京</option>
+				<option value="3">广东</option>
+				<option value="3">湖南</option>
+				<option value="5">黑龙江</option>
+				<option value="6">广西</option>
+				<option value="7">河南</option>
+				<option value="8">河北</option>
+				<option value="9">山东</option>
+				<option value="10">山西</option>
+				<option value="11">江苏</option>
+				<option value="12">江西</option>
+				<option value="13">西藏</option>
+				<option value="14">安徽</option>
+				<option value="15">浙江</option>
+				<option value="16">福建</option>
+				<option value="17">四川</option>
+		</select>
+		</label> <label> <span>&nbsp;</span> <input type="button"
+			class="button" value="提交" onclick="chooseForm()" /> <span>&nbsp;</span>
+			<input type="reset" class="button" name="Reset" value="重置" /> <span>&nbsp;</span>
+			<input type="button" class="button" value="关闭" onclick="init()" />
+		</label>
+	
+	</form>
+	<table id="table" class="table table-bordered"
+			style="margin-top: 50px;display: none">
+			<thead>
+				<tr>
+					<th>院校名称</th>
+					<th>录取可能(数值越大可能性越高)</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+</body>
+<script type="text/javascript">
+	function chooseForm() {
+		var areas = $("#areas option:selected").text();
+		var subject = $("#subject option:selected").text();
+		var batch = $("#batch option:selected").text();
+		var year = $("#year option:selected").text();
+		var place = $("#place option:selected").text();
+		var score = $("#score").val();
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/choose",
+			data : {
+				areas : areas,
+				subject : subject,
+				batch : batch,
+				year : year,
+				score : score,
+				place : place
+			},
+			success : function(result) {
+				if (result.resultCode == 200) {
+					var data = result.data;
+					var distance_line = result.distance_line;
+					addData(data, distance_line);
+				} else {
+
+				}
+				;
+			},
+			error : function() {
+
+			}
+		});
+	}
+	function addData(data, distance_line) {
+		var form = document.getElementById("chooseForm");
+		form.style.display="none";
+		$("#table tr:not(:first)").empty("");
+		var table = document.getElementById("table");
+		table.style.display="";
+		debugger
+		for (var i = 0; i < data.length; i++) {
+			var college = data[i].college;
+			var degree = (distance_line / data[i].distance_line).toFixed(4);
+			
+			var row = table.insertRow(table.rows.length);
+			var c1 = row.insertCell(0);
+			c1.innerHTML = college;
+			var c2 = row.insertCell(1);
+			c2.innerHTML = degree;
+		}
+	}
+	function init() {
+
+	}
+</script>
+</html>

@@ -21,13 +21,13 @@
 		SELECT ID,USERNAME,PASSWORD,NAME,JURISDICTION,PLACE FROM user WHERE username like
 		CONCAT('%',#{arg0},'%')
 	</select>
-	<update id="updateUser" parameterType="int">
+	<update id="updateUser" parameterType="com.entrance.bean.User">
 		UPDATE user set
-		JURISDICTION=#{jurisdiction} where USERNAME=#{username}
+		JURISDICTION=#{jurisdiction},PLACE=#{place} where USERNAME=#{username}
 	</update>
 	<insert id="insertUser" parameterType="com.entrance.bean.User" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
 		USER(USERNAME,NAME,PASSWORD,JURISDICTION,PLACE)
-		VALUES(#{username},#{name},#{password}#{jurisdiction},#{place})
+		VALUES(#{username},#{name},#{password},#{jurisdiction},#{place})
 	</insert>
 </mapper>

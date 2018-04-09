@@ -25,6 +25,7 @@ import com.entrance.service.impl.MajorServiceImpl;
 import com.entrance.service.impl.UserServiceImpl;
 import com.entrance.tools.AreasUtil;
 import com.entrance.tools.Jurisdiction;
+import com.entrance.tools.RandomCode;
 
 @Controller
 @RequestMapping("/entrance")
@@ -84,7 +85,7 @@ public class EntranceAction {
 	}
 
 	@RequestMapping("/getName")
-	public void getName(HttpServletResponse response, HttpServletRequest request) {
+	public void getName(HttpServletResponse response, HttpServletRequest request)throws Exception{
 		response.setContentType("text/html; charset=utf-8");
 		response.setCharacterEncoding("utf-8");
 		HttpSession session = request.getSession();
@@ -95,14 +96,13 @@ public class EntranceAction {
 			PrintWriter out = response.getWriter();
 			json.put("resultCode", 200);
 			json.put("user", u.getName());
+			json.put("username", u.getUsername());
 			String jurisdiction = new Jurisdiction().jurisdictionClassify(u.getJurisdiction());
 			json.put("Jurisdiction", jurisdiction);
 			json.put("place", u.getPlace());
 			out.write(json.toJSONString());
 			out.close();
-		} catch (IOException e) {
-
-			e.printStackTrace();
+		} catch (Exception e) {
 		}
 
 	}
@@ -294,7 +294,7 @@ public class EntranceAction {
 
 		String username = request.getParameter("username");
 		String name = request.getParameter("name");
-		String password = request.getParameter("password");
+		String password = new RandomCode().getCode();
 		String jurisdiction = request.getParameter("jurisdiction");
 		String place = request.getParameter("place");
 		User user = new User();
@@ -316,6 +316,25 @@ public class EntranceAction {
 		}
 
 	}
+	@RequestMapping("/getUser")
+	public void getUser(HttpServletResponse response, HttpServletRequest request) {
+		response.setContentType("text/html; charset=utf-8");
+		response.setCharacterEncoding("utf-8");
+		String username = request.getParameter("username");
+		JSONObject json = new JSONObject();
+		try {
+			PrintWriter out = response.getWriter();
+			List<User> list = userService.getUserList(username);
+			json.put("resultCode", 200);
+			json.put("data", list);
+			out.write(json.toJSONString());
+			out.close();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+	}
 	@RequestMapping("/updateUser")
 	public void updateUser(HttpServletResponse response, HttpServletRequest request) {
 		response.setContentType("text/html; charset=utf-8");
@@ -323,9 +342,11 @@ public class EntranceAction {
 
 		String username = request.getParameter("username");
 		String jurisdiction = request.getParameter("jurisdiction");
+		String place = request.getParameter("place");
 		User user = new User();
 		user.setJurisdiction(Integer.valueOf(jurisdiction));
 		user.setUsername(username);
+		user.setPlace(place);
 		JSONObject json = new JSONObject();
 		try {
 			PrintWriter out = response.getWriter();
@@ -352,6 +373,35 @@ public class EntranceAction {
 			List<User> list = userService.getUserList(username);
 			json.put("resultCode", 200);
 			json.put("data", list);
+			out.write(json.toJSONString());
+			out.close();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+	@RequestMapping("/choose")
+	public void choose(HttpServletResponse response, HttpServletRequest request) {
+		response.setContentType("text/html; charset=utf-8");
+		response.setCharacterEncoding("utf-8");
+
+		String subject = request.getParameter("subject");
+		String batch = request.getParameter("batch");
+		String year = request.getParameter("year");
+		String areas = request.getParameter("areas");
+		String place = request.getParameter("place");
+		String score = request.getParameter("score");
+		int y = Integer.valueOf(year)-1;
+		JSONObject json = new JSONObject();
+		try {
+			PrintWriter out = response.getWriter();
+			List<CollegeEnroll> list = collegeEnrollService.choose(place, areas, subject, batch, String.valueOf(y));
+			List<AreasEnroll> area = areasEnrollService.findAreasEnroll(areas, subject, batch, year);
+			int distance_line = Integer.valueOf(score)-area.get(0).getControl_line();
+			json.put("distance_line", distance_line);
+			json.put("data", list);
+			json.put("resultCode", 200);
 			out.write(json.toJSONString());
 			out.close();
 		} catch (IOException e) {

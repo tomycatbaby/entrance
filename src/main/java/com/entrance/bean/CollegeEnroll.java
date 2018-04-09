@@ -21,6 +21,14 @@ public class CollegeEnroll {
 	private Integer year;
 	private Integer highest_score;
 	private Integer lowest_score;
+	private Integer distance_line;
+	public Integer getDistance_line() {
+		return distance_line;
+	}
+
+	public void setDistance_line(Integer distance_line) {
+		this.distance_line = distance_line;
+	}
 
 	public Integer getShift_line() {
 		return shift_line;

@@ -24,14 +24,15 @@
 		<button class="button_item" onclick="searchMajor()">专业</button>
 	</div>
 
-	<div class="btn-group" style="margin-top: 20px;margin-left: 250px">
+	<div class="btn-group" style="margin-top: 20px; margin-left: 250px">
 		<button type="button" class="btn btn-primary dropdown-toggle"
 			data-toggle="dropdown">
 			更多功能 <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
-			<li><a href="/maven/choose.html">根据分数选学校</a></li>
-			<li class="divider"></li>
+			<li><a href="/maven/chooseScore.html">根据分数选学校</a></li>
+			<li><a href="/maven/chooseRank.html">根据位次选学校/专业</a></li>
+			<li><a href="/maven/hot.html">查看专业热门程度</a></li>
 		</ul>
 	</div>
 	<div class="dropdown">
@@ -50,14 +51,30 @@
 		<form>
 			<div class="op-generaltable-selectip1">选择生源地：</div>
 			<select id="areas" class="select1" onchange="areaSubject()">
-				<option value="4">不限</option>
-				<option value="0">重庆</option>
-				<option value="1">四川</option>
-				<option value="2">广东</option>
+				<option value="1">重庆</option>
+				<option value="2">北京</option>
+				<option value="3">广东</option>
 				<option value="3">湖南</option>
+				<option value="5">黑龙江</option>
+				<option value="6">广西</option>
+				<option value="7">河南</option>
+				<option value="8">河北</option>
+				<option value="9">山东</option>
+				<option value="10">山西</option>
+				<option value="11">江苏</option>
+				<option value="12">江西</option>
+				<option value="13">西藏</option>
+				<option value="14">安徽</option>
+				<option value="15">浙江</option>
+				<option value="16">福建</option>
+				<option value="17">四川</option>
+				<option value="18">上海</option>
+				<option value="19">天津</option>
+				<option value="20">贵州</option>
 			</select>
 			<div class="op-generaltable-selectip2">选择科属：</div>
 			<select id="subject" class="select2" onchange="areaSubject()">
+				<option value="o">不限</option>
 				<option value="science" selected="selected">理科</option>
 				<option value="arts">文科</option>
 			</select>
@@ -67,14 +84,16 @@
 				<option value="2">本科提前批</option>
 				<option value="0">本科一批</option>
 				<option value="1">本科二批</option>
+				<option value="4">专科一批</option>
+				<option value="5">专科二批</option>
 			</select>
 
 			<div class="op-generaltable-selectip2">选择年份：</div>
 			<select id="year" class="select2" onchange="areaSubject()">
 				<option value="3">不限</option>
-				<option value="0">2015</option>
-				<option value="1">2016</option>
-				<option value="2">2017</option>
+				<option value="0">2016</option>
+				<option value="1">2017</option>
+				<option value="2">2018</option>
 			</select>
 		</form>
 		<table id="td" class="table table-bordered"
@@ -106,14 +125,18 @@
 		<form>
 			<div class="op-generaltable-selectip2">选择科属：</div>
 			<select id="areassubject" class="select2" onchange="areasCondition()">
+				<option value="o">不限</option>
 				<option value="science" selected="selected">理科</option>
 				<option value="arts">文科</option>
 			</select>
 			<div class="op-generaltable-selectip2">选择录取批次：</div>
 			<select id="areasbatch" class="select2" onchange="areasCondition()">
 				<option value="3">不限</option>
+				<option value="2">本科提前批</option>
 				<option value="0">本科一批</option>
 				<option value="1">本科二批</option>
+				<option value="4">专科一批</option>
+				<option value="5">专科二批</option>
 			</select>
 			<div class="op-generaltable-selectip2">选择年份：</div>
 			<select id="areasyear" class="select2" onchange="areasCondition()">
@@ -149,14 +172,31 @@
 		<form>
 			<div class="op-generaltable-selectip1">考生所在地：</div>
 			<select id="majorareas" class="select1" onchange="majorCondition()">
-				<option value="4">不限</option>
-				<option value="0">重庆</option>
-				<option value="1">四川</option>
-				<option value="2">广东</option>
+
+				<option value="1">重庆</option>
+				<option value="2">北京</option>
+				<option value="3">广东</option>
 				<option value="3">湖南</option>
+				<option value="5">黑龙江</option>
+				<option value="6">广西</option>
+				<option value="7">河南</option>
+				<option value="8">河北</option>
+				<option value="9">山东</option>
+				<option value="10">山西</option>
+				<option value="11">江苏</option>
+				<option value="12">江西</option>
+				<option value="13">西藏</option>
+				<option value="14">安徽</option>
+				<option value="15">浙江</option>
+				<option value="16">福建</option>
+				<option value="17">四川</option>
+				<option value="18">上海</option>
+				<option value="19">天津</option>
+				<option value="20">贵州</option>
 			</select>
 			<div class="op-generaltable-selectip2">文理分科：</div>
 			<select id="majorsubject" class="select2" onchange="majorCondition()">
+				<option value="o">不限</option>
 				<option value="science" selected="selected">理科</option>
 				<option value="arts">文科</option>
 			</select>
@@ -166,14 +206,16 @@
 				<option value="2">本科提前批</option>
 				<option value="0">本科一批</option>
 				<option value="1">本科二批</option>
+				<option value="4">专科一批</option>
+				<option value="5">专科二批</option>
 			</select>
 
 			<div class="op-generaltable-selectip2">年份：</div>
 			<select id="majoryear" class="select2" onchange="majorCondition()">
 				<option value="3">不限</option>
-				<option value="0">2015</option>
-				<option value="1">2016</option>
-				<option value="2">2017</option>
+				<option value="0">2016</option>
+				<option value="1">2017</option>
+				<option value="2">2018</option>
 			</select>
 		</form>
 		<table id="majortd" class="table table-bordered"
@@ -251,13 +293,13 @@
 
 						} else {
 							alert("异常！");
-							window.location.href='/maven/index.html';
+							window.location.href = '/maven/index.html';
 						}
 						;
 					},
 					error : function() {
 						alert("异常！");
-						window.location.href='/maven/index.html';
+						window.location.href = '/maven/index.html';
 					}
 				});
 
@@ -318,6 +360,7 @@
 								//选中生源地
 								var user = result.user;
 								var i = areasSelect(user.place);
+								debugger;
 								var options = document.getElementById("areas").children;
 								options[i].selected = true;
 								if (user.jurisdiction < 3) {
@@ -429,10 +472,10 @@
 				});
 	}
 	function areasSelect(place) {
-		var array = [ "重庆", "四川", "广东", "湖南" ];
-		for (var i = 0; i < 4; i++) {
+		var array = [ "重庆", "四川","广东", "湖南" ,"北京","黑龙江","广西","河南","河北","山东","山西","江苏","江西","西藏","安徽","浙江","福建","上海","天津","贵州"];
+		for (var i = 0; i < array.length; i++) {
 			if (array[i] == place)
-				return i + 1;
+				return i;
 		}
 	}
 	function addAreasData(array) {
@@ -583,6 +626,9 @@
 		var subject = $("#areassubject option:selected").text();
 		var batch = $("#areasbatch option:selected").text();
 		var year = $("#areasyear option:selected").text();
+		if (subject == '不限') {
+			subject = '';
+		}
 		if (batch == '不限') {
 			batch = '';
 		}
@@ -622,6 +668,9 @@
 		if (batch == '不限') {
 			batch = '';
 		}
+		if (subject == '不限') {
+			subject = '';
+		}
 		if (areas == '不限') {
 			areas = '';
 		}
@@ -658,6 +707,9 @@
 		var subject = $("#majorsubject option:selected").text();
 		var batch = $("#majorbatch option:selected").text();
 		var year = $("#majoryear option:selected").text();
+		if (subject == '不限') {
+			subject = '';
+		}
 		if (batch == '不限') {
 			batch = '';
 		}

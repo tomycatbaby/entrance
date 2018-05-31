@@ -69,6 +69,9 @@
 				<option value="15">浙江</option>
 				<option value="16">福建</option>
 				<option value="17">四川</option>
+				<option value="18">上海</option>
+				<option value="19">天津</option>
+				<option value="20">贵州</option>
 		</select>
 		</label> <label> <span>&nbsp;</span> <input type="button"
 			class="button" value="提交" onclick="userForm()" /> <span>&nbsp;</span>
@@ -80,7 +83,7 @@
 	<form id="userForm1" method="post" class="smart-green"
 		style="display: none">
 		<h1>
-		 Update	User Form<span>修改用户权限信息.</span>
+			Update User Form<span>修改用户权限信息.</span>
 		</h1>
 		<label> <span>用户名 :</span> <input id="username1" type="text"
 			name="username1" placeholder="设置登录用户名" />
@@ -110,6 +113,9 @@
 				<option value="15">浙江</option>
 				<option value="16">福建</option>
 				<option value="17">四川</option>
+				<option value="18">上海</option>
+				<option value="19">天津</option>
+				<option value="20">贵州</option>
 		</select>
 		</label> <label> <span>&nbsp;</span> <input type="button"
 			class="button" value="提交" onclick="commitUpdateForm()" /> <span>&nbsp;</span>
@@ -132,6 +138,7 @@
 			<thead>
 				<tr>
 					<th>用户名</th>
+					<th>登录密码</th>
 					<th>姓名</th>
 					<th>角色权限</th>
 					<th>地区</th>
@@ -147,8 +154,7 @@
 			setInterval(function() {
 				fnDate();
 			}, 1000);
-			$
-			.ajax({
+			$.ajax({
 				type : "POST",
 				dataType : "json",
 				url : "/maven/entrance/getName",
@@ -160,18 +166,18 @@
 							return;
 						} else {
 							alert("异常！");
-							window.location.href='/maven/index.html';
+							window.location.href = '/maven/index.html';
 						}
 
 					} else {
 						alert("异常！");
-						window.location.href='/maven/index.html';
+						window.location.href = '/maven/index.html';
 					}
 					;
 				},
 				error : function() {
 					alert("异常！");
-					window.location.href='/maven/index.html';
+					window.location.href = '/maven/index.html';
 				}
 			});
 		});
@@ -212,12 +218,15 @@
 						+ format(array[i].jurisdiction)
 						+ "','"
 						+ array[i].place + "')\">" + array[i].username + "</a>";
-				var c2 = row.insertCell(1);
+				var c5 = row.insertCell(1);
+				c5.innerHTML = array[i].password;
+				var c2 = row.insertCell(2);
 				c2.innerHTML = array[i].name;
-				var c3 = row.insertCell(2);
+				var c3 = row.insertCell(3);
 				c3.innerHTML = format(array[i].jurisdiction);
-				var c4 = row.insertCell(3);
+				var c4 = row.insertCell(4);
 				c4.innerHTML = array[i].place;
+
 			}
 		}
 		function format(value) {
@@ -255,36 +264,36 @@
 			$('#place1 option').filter(function() {
 				return $(this).text() == place;
 			}).attr("selected", true);
-			
+
 		}
-		function commitUpdateForm(){
+		function commitUpdateForm() {
 			debugger
 			var username = $("#username1").val();
 			var jurisdiction = $("#jurisdiction1 option:selected").val();
 			var place = $("#place1 option:selected").text();
 			$
-			.ajax({
-				type : "POST",
-				dataType : "json",
-				url : "/maven/entrance/updateUser",
-				data : {
-					username : username,
-					jurisdiction : jurisdiction,
-					place : place
-				},
-				success : function(result) {
-					if (result.resultCode == 200) {
-						document.getElementById("userForm1").style.display = "none";
-						alert("修改成功");
-					} else {
-						alert("异常！");
-					}
-					;
-				},
-				error : function() {
-					alert("异常！");
-				}
-			});
+					.ajax({
+						type : "POST",
+						dataType : "json",
+						url : "/maven/entrance/updateUser",
+						data : {
+							username : username,
+							jurisdiction : jurisdiction,
+							place : place
+						},
+						success : function(result) {
+							if (result.resultCode == 200) {
+								document.getElementById("userForm1").style.display = "none";
+								alert("修改成功");
+							} else {
+								alert("异常！");
+							}
+							;
+						},
+						error : function() {
+							alert("异常！");
+						}
+					});
 		}
 		function updateUser() {
 			init();

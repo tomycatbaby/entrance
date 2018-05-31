@@ -22,8 +22,11 @@
 	</resultMap>
 	<resultMap type="com.entrance.bean.CollegeEnroll" id="chooseResult">
 		<result property="college" column="COLLEGE" jdbcType="VARCHAR" />
-		<result property="distance_line" column="DISTANCE_LINE" jdbcType="INTEGER"/>
-		<result property="areas" column="PLACE" jdbcType="VARCHAR"/>
+		<result property="subject" column="SUBJECT" jdbcType="VARCHAR" />
+		<result property="average" column="AVERAGE" jdbcType="INTEGER" />
+		<result property="batch" column="BATCH" jdbcType="VARCHAR" />
+		<result property="areas" column="PLACE" jdbcType="VARCHAR" />
+		<result property="year" column="YEAR" jdbcType="INTEGER" />
 	</resultMap>
 	<insert id="insert" parameterType="com.entrance.bean.CollegeEnroll"
 		useGeneratedKeys="true" keyProperty="id">
@@ -46,8 +49,12 @@
 		ID,COLLEGE,AREAS,SUBJECT,AVERAGE,HIGHEST_SCORE,LOWEST_SCORE,SHIFT_LINE,ENROLLMENT,CONTROL_LINE,BATCH,YEAR
 		FROM college_enroll WHERE college like
 		CONCAT('%',#{arg0},'%') and
-		areas=#{arg1} and
-		subject=#{arg2}
+		areas=#{arg1}
+		<if test="arg2 !=null and arg2!=''">
+			and
+			subject=#{arg2}
+		</if>
+
 		<if test="arg3 !=null and arg3!=''">
 			and batch=#{arg3}
 		</if>
@@ -56,10 +63,13 @@
 		</if>
 	</select>
 	<select id="choose" resultMap="chooseResult">
-		SELECT college_enroll.college,distance_line,year,college.place from
+		SELECT college_enroll.college,batch,subject,average,year,college.place from
 		college_enroll
 		INNER JOIN college ON
 		college_enroll.college=college.college
+		<if test="arg5!=null and arg5 !=''">
+			AND college_enroll.average<![CDATA[ <= ]]>#{arg5}
+		</if>
 		<if test="arg4!=null and arg4!=''">
 			AND college_enroll.year=#{arg4}
 		</if>

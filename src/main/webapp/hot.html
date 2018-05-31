@@ -1,0 +1,222 @@
+
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/ui.css">
+<script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" charset="utf-8"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="css/index.css">
+<!-- 引入Vue -->
+<script src="js/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="js/index.js"></script>
+<script src="js/echarts.min.js"></script>
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="home"
+		style="width: 100px; line-height: 90px; font-size: large; margin-bottom: 10px; float: left; margin-left: 50px;">
+		<a id="choose" class="manager" href="/maven/home.html">回到首页</a>
+	</div>
+	<form id="chooseForm" method="post" class="smart-green">
+		<h1>
+			Provide Choice<span>查看志愿填报位置.</span>
+		</h1>
+		<label> <span>年份:</span><select id="year" name="year">
+				<option value="2">2016</option>
+				<option value="3">2017</option>
+
+		</select>
+		</label> <label> <span>选择生源地 :</span><select id="areas" name="areas">
+				<option value="1">重庆</option>
+				<option value="2">北京</option>
+				<option value="3">广东</option>
+				<option value="3">湖南</option>
+				<option value="5">黑龙江</option>
+				<option value="6">广西</option>
+				<option value="7">河南</option>
+				<option value="8">河北</option>
+				<option value="9">山东</option>
+				<option value="10">山西</option>
+				<option value="11">江苏</option>
+				<option value="12">江西</option>
+				<option value="13">西藏</option>
+				<option value="14">安徽</option>
+				<option value="15">浙江</option>
+				<option value="16">福建</option>
+				<option value="17">四川</option>
+				<option value="18">上海</option>
+				<option value="19">天津</option>
+				<option value="20">贵州</option>
+		</select>
+		</label> <label> <span>院校名称:</span> <input type="text" id="college"
+			list="collegelist" name="college" placeholder="必须填写"
+			onchange="loadMajor()"> <datalist id="collegelist">
+			</datalist>
+		</label> <label> <span>专业名称:</span> <input type="text" id="major"
+			list="majorlist" name="major" placeholder="必须填写"> <datalist
+				id="majorlist">
+			</datalist>
+		</label> <label> <span>&nbsp;</span> <input type="button"
+			class="button" value="提交" onclick="chooseForm()" /> <span>&nbsp;</span>
+			<input type="reset" class="button" name="Reset" value="重置" /> <span>&nbsp;</span>
+
+		</label>
+
+	</form>
+	<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+	<div id="main"
+		style="display: none; width: 1100px; height: 400px; float: left"></div>
+</body>
+<script type="text/javascript">
+	window.onload = function() {
+		loadCollege();
+
+	}
+	function loadCollege() {
+		$("#collegelist").empty();
+		var areas = $("#areas option:selected").text();
+		var year = $("#year option:selected").text();
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/getPositionCollege",
+			data : {
+				areas : areas,
+				year : year
+			},
+			success : function(result) {
+				if (result.resultCode == 200) {
+					var array = result.data;
+					for (var i = 0; i < array.length; i++) {
+						$("#collegelist").append(
+								"<option >" + array[i].college + "</option>");
+					}
+				}
+			},
+			error : function() {
+
+			}
+		});
+	}
+	function loadMajor() {
+		$("#majorlist").empty();
+		$("#major").val("");
+		var areas = $("#areas option:selected").text();
+		var year = $("#year option:selected").text();
+		var college = $("#college").val();
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/getPositionCollege",
+			data : {
+				areas : areas,
+				year : year,
+				college : college
+			},
+			success : function(result) {
+				if (result.resultCode == 200) {
+					var array = result.data;
+					for (var i = 0; i < array.length; i++) {
+						$("#majorlist").append(
+								"<option >" + array[i].major + "</option>");
+					}
+				}
+			},
+			error : function() {
+
+			}
+		});
+	}
+	function chooseForm() {
+		var chooseForm = document.getElementById("chooseForm");
+		chooseForm.style.display = "none";
+		var areas = $("#areas option:selected").text();
+		var year = $("#year option:selected").text();
+		var college = $("#college").val();
+		var major = $("#major").val();
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : "/maven/entrance/getPositionCollege",
+			data : {
+				areas : areas,
+				year : year,
+				college : college,
+				major : major
+			},
+			success : function(result) {
+				if (result.resultCode == 200) {
+					mychart(result.data);
+
+				}
+			},
+			error : function() {
+
+			}
+		});
+	}
+	function mychart(array) {
+		var position = array[0];
+		var m = document.getElementById('main');
+		var total = position.first + position.second + position.third
+				+ position.fourth + position.fifth + position.sixth;
+		m.style.display = "block";
+		var myChart = echarts.init(document.getElementById('main'));
+		var option = {
+			title : {
+				text : '2016年【' + position.college + '】【' + position.major
+				+ '】专业在【' + position.areas + '】录取的共【' + total + '】名【' + position.subject
+				+ '】考生各志愿位置分布',
+				subtext : '数据仅供参考',
+				x : 'center'
+			},
+			tooltip : {
+				trigger : 'item',
+				formatter : "{a} <br/>{b} : {c}人 ({d}%)"
+			},
+			legend : {
+				orient : 'vertical',
+				left : 'left',
+				data : [ '第一志愿', '第二志愿', '第三志愿', '第四志愿', '第五志愿', '第六志愿' ]
+			},
+			series : [ {
+				name : '填报位置',
+				type : 'pie',
+				radius : '55%',
+				center : [ '50%', '60%' ],
+				data : [ {
+					value : position.first,
+					name : '第一志愿'
+				}, {
+					value : position.second,
+					name : '第二志愿'
+				}, {
+					value : position.third,
+					name : '第三志愿'
+				}, {
+					value : position.fourth,
+					name : '第四志愿'
+				}, {
+					value : position.fifth,
+					name : '第五志愿'
+				}, {
+					value : position.sixth,
+					name : '第六志愿'
+				} ],
+				itemStyle : {
+					emphasis : {
+						shadowBlur : 10,
+						shadowOffsetX : 0,
+						shadowColor : 'rgba(0, 0, 0, 0, 0, 0)'
+					}
+				}
+			} ]
+		};
+		myChart.setOption(option);
+	}
+</script>
+</html>

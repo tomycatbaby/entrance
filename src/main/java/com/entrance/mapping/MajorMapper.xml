@@ -12,6 +12,7 @@
 		<result property="areas" column="AREAS" jdbcType="VARCHAR" />
 		<result property="subject" column="SUBJECT" jdbcType="VARCHAR" />
 		<result property="average" column="AVERAGE" jdbcType="INTEGER" />
+		<result property="rank" column="RANK" jdbcType="INTEGER" />
 		<result property="highest_score" column="HIGHEST_SCORE"
 			jdbcType="INTEGER" />
 		<result property="enrollment" column="ENROLLMENT" jdbcType="INTEGER" />
@@ -52,5 +53,82 @@
 		<if test="arg4 !=null and arg4!=''">
 			and year=#{arg4}
 		</if>
+	</select>
+	<select id="getCollege" resultMap="MajorResult">
+		select DISTINCT
+		major_enroll.college from major_enroll INNER JOIN
+		college on
+		major_enroll.college=college.college
+		<if test="arg4!=null and arg4!=''">
+			AND major_enroll.year=#{arg4}
+		</if>
+		<if test="arg3!=null and arg3!=''">
+			AND major_enroll.batch=#{arg3}
+		</if>
+		<if test="arg2!=null and arg2!=''">
+			AND major_enroll.subject=#{arg2}
+		</if>
+		<if test="arg1!=null and arg1!=''">
+			AND major_enroll.areas=#{arg1}
+		</if>
+		<if test="arg0!=null and arg0!=''">
+			AND college.place=#{arg0}
+		</if>
+	</select>
+	<select id="getMajor" resultMap="MajorResult">
+		select DISTINCT
+		major_enroll.major from major_enroll INNER JOIN college
+		on
+		major_enroll.college=college.college AND
+		major_enroll.college=#{arg5}
+		<if test="arg4!=null and arg4!=''">
+			AND major_enroll.year=#{arg4}
+		</if>
+		<if test="arg3!=null and arg3!=''">
+			AND major_enroll.batch=#{arg3}
+		</if>
+		<if test="arg2!=null and arg2!=''">
+			AND major_enroll.subject=#{arg2}
+		</if>
+		<if test="arg1!=null and arg1!=''">
+			AND major_enroll.areas=#{arg1}
+		</if>
+		<if test="arg0!=null and arg0!=''">
+			AND college.place=#{arg0}
+		</if>
+	</select>
+	<select id="rank" resultMap="MajorResult">
+		select
+		major_enroll.college,major_enroll.batch,major_enroll.year,major_enroll.average,
+		major_enroll.major,major_enroll.rank,major_enroll.subject,college.place
+		as areas from major_enroll INNER JOIN
+		college
+		on
+		major_enroll.college=college.college AND major_enroll.rank>=#{arg6}
+		<if test="arg7!=null and arg7!=''">
+			AND
+			major_enroll.major like
+			CONCAT('%',#{arg7},'%')
+		</if>
+		<if test="arg5!=null and arg5!=''">
+			AND
+			major_enroll.college=#{arg5}
+		</if>
+		<if test="arg4!=null and arg4!=''">
+			AND major_enroll.year=#{arg4}
+		</if>
+		<if test="arg3!=null and arg3!=''">
+			AND major_enroll.batch=#{arg3}
+		</if>
+		<if test="arg2!=null and arg2!=''">
+			AND major_enroll.subject=#{arg2}
+		</if>
+		<if test="arg1!=null and arg1!=''">
+			AND major_enroll.areas=#{arg1}
+		</if>
+		<if test="arg0!=null and arg0!=''">
+			AND college.place=#{arg0}
+		</if>
+		ORDER BY major_enroll.rank
 	</select>
 </mapper>

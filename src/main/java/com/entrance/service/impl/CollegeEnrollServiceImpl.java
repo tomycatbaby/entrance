@@ -29,9 +29,9 @@ public class CollegeEnrollServiceImpl implements CollegeEnrollService {
 		
 	}
 
-	public List<CollegeEnroll> choose(String place, String areas, String subject, String batch, String year) {
+	public List<CollegeEnroll> choose(String place, String areas, String subject, String batch, String year,String score) {
 		
-		return this.collegeEnrollDao.choose(place, areas, subject, batch, year);
+		return this.collegeEnrollDao.choose(place, areas, subject, batch, year,score);
 	}
 
 }

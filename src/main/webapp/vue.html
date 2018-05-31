@@ -1,0 +1,141 @@
+
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- 引入样式 -->
+<link rel="stylesheet" href="css/index.css">
+<!-- 引入Vue -->
+<script src="js/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="js/index.js"></script>
+<script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
+</head>
+<style type="text/css">
+.column-cell-class-name-test2 {
+	background-color: #2db7f5;
+	font-weight: bold;
+}
+</style>
+<body>
+	<div id="app">
+		<v-table :width="1000" :columns="columns" :table-data="tableData"
+			:column-cell-class-name="columnCellClass" row-hover-color="#eee"
+			row-click-color="#edf7ff"></v-table>
+		<v-pagination :total="600" :page-size="30"></v-pagination>
+	</div>
+
+
+
+
+</body>
+<script>
+
+
+function chooseForm() {
+	var areas = $("#areas option:selected").text();
+	var subject = $("#subject option:selected").text();
+	var batch = $("#batch option:selected").text();
+	var year = $("#year option:selected").text();
+	var place = $("#place option:selected").text();
+	var score = $("#score").val();
+	vm=new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                tableData: [
+                
+                ],
+                columns: [
+                {field: 'college', title:'院校名称', width: 100, titleAlign: 'center',columnAlign:'center'},
+                {field: 'tel', title: '录取可能(数值越大可能性越高)', width: 260, titleAlign: 'center',columnAlign:'center'}
+                ]
+            }
+        },
+        created:function(){
+        	$.ajax({
+    			type : "POST",
+    			dataType : "json",
+    			url : "/maven/entrance/choose",
+    			data : {
+    				areas : areas,
+    				subject : subject,
+    				batch : batch,
+    				year : year,
+    				score : score,
+    				place : place
+    			},
+    			success : function(result) {
+    				vm.tableData=addData(result.data,result.distance_line);
+    			},
+    			error : function() {
+
+    			}
+    		});
+        },
+        methods:{
+            columnCellClass(rowIndex,columnName,rowData){
+                    // 给第二行设置className
+                    if (rowIndex%2 ===1){
+
+                        return 'column-cell-class-name-test2';
+                    }
+                }
+            }
+        })
+}
+function addData(data, distance_line) {
+	var array = new Array();
+	for (var i = 0; i < data.length; i++) {
+		var college = new Object();
+		college.name = data[i].college;
+		college.degree = (distance_line / data[i].distance_line).toFixed(4);
+		array[i] = college;
+	}
+	return array;
+}
+
+
+
+
+
+
+    vm=new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                tableData: [
+                
+                ],
+                columns: [
+                {field: 'college', title:'院校名称', width: 100, titleAlign: 'center',columnAlign:'center'},
+                {field: 'tel', title: '录取可能(数值越大可能性越高)', width: 260, titleAlign: 'center',columnAlign:'center'}
+                ]
+            }
+        },
+        created:function(){
+        	$.ajax({
+    			type : "POST",
+    			dataType : "json",
+    			url : "/maven/entrance/vue",
+    			data : {},
+    			success : function(result) {
+    					vm.tableData=result.data;
+    					
+    			},
+    			error : function() {
+
+    			}
+    		});
+        },
+        methods:{
+            columnCellClass(rowIndex,columnName,rowData){
+                    // 给第二行设置className
+                    if (rowIndex%2 ===1){
+
+                        return 'column-cell-class-name-test2';
+                    }
+                }
+            }
+        })
+    </script>
+</html>

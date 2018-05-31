@@ -6,15 +6,23 @@ private String major;
 private String college;
 private Integer highest_score;
 private Integer average;
+private Integer rank;
 private String subject;
 private String areas;
 private String batch;
 private Integer year;
+
 @Override
 public String toString() {
 	return "MajorEnroll [id=" + id + ", major=" + major + ", college=" + college + ", highest_score=" + highest_score
-			+ ", average=" + average + ", subject=" + subject + ", areas=" + areas + ", batch=" + batch + ", year="
-			+ year + "]";
+			+ ", average=" + average + ", rank=" + rank + ", subject=" + subject + ", areas=" + areas + ", batch="
+			+ batch + ", year=" + year + "]";
+}
+public Integer getRank() {
+	return rank;
+}
+public void setRank(Integer rank) {
+	this.rank = rank;
 }
 public Integer getId() {
 	return id;

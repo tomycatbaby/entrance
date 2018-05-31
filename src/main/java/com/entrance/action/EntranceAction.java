@@ -18,10 +18,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.entrance.bean.AreasEnroll;
 import com.entrance.bean.CollegeEnroll;
 import com.entrance.bean.MajorEnroll;
+import com.entrance.bean.Position;
 import com.entrance.bean.User;
 import com.entrance.service.impl.AreasEnrollServiceImpl;
 import com.entrance.service.impl.CollegeEnrollServiceImpl;
 import com.entrance.service.impl.MajorServiceImpl;
+import com.entrance.service.impl.PositionServiceImpl;
 import com.entrance.service.impl.UserServiceImpl;
 import com.entrance.tools.AreasUtil;
 import com.entrance.tools.Jurisdiction;
@@ -38,7 +40,8 @@ public class EntranceAction {
 	private MajorServiceImpl majorService;
 	@Resource
 	private AreasEnrollServiceImpl areasEnrollService;
-
+	@Resource
+	private PositionServiceImpl positionService;
 	@RequestMapping("/login")
 	public void login(HttpServletResponse response, HttpServletRequest request) throws IOException {
 		response.setContentType("text/html; charset=utf-8");
@@ -392,14 +395,117 @@ public class EntranceAction {
 		String areas = request.getParameter("areas");
 		String place = request.getParameter("place");
 		String score = request.getParameter("score");
-		int y = Integer.valueOf(year)-1;
+		int s = Integer.valueOf(score)+10;
 		JSONObject json = new JSONObject();
 		try {
 			PrintWriter out = response.getWriter();
-			List<CollegeEnroll> list = collegeEnrollService.choose(place, areas, subject, batch, String.valueOf(y));
-			List<AreasEnroll> area = areasEnrollService.findAreasEnroll(areas, subject, batch, year);
-			int distance_line = Integer.valueOf(score)-area.get(0).getControl_line();
-			json.put("distance_line", distance_line);
+		
+			List<CollegeEnroll> list = collegeEnrollService.choose(place, areas, subject, batch, year,String.valueOf(s));
+			json.put("data", list);
+			json.put("resultCode", 200);
+			out.write(json.toJSONString());
+			out.close();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+	@RequestMapping("/getCollege")
+	public void getCollege(HttpServletResponse response, HttpServletRequest request) {
+		response.setContentType("text/html; charset=utf-8");
+		response.setCharacterEncoding("utf-8");
+
+		String subject = request.getParameter("subject");
+		String batch = request.getParameter("batch");
+		String year = request.getParameter("year");
+		String place = request.getParameter("place");
+		String areas = request.getParameter("areas");
+	
+		JSONObject json = new JSONObject();
+		try {
+			PrintWriter out = response.getWriter();
+			List<MajorEnroll> list = majorService.getCollege(place, areas, subject, batch, year);
+			json.put("data", list);
+			json.put("resultCode", 200);
+			out.write(json.toJSONString());
+			out.close();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+	@RequestMapping("/getMajor")
+	public void getMajor(HttpServletResponse response, HttpServletRequest request) {
+		response.setContentType("text/html; charset=utf-8");
+		response.setCharacterEncoding("utf-8");
+
+		String subject = request.getParameter("subject");
+		String batch = request.getParameter("batch");
+		String year = request.getParameter("year");
+		String place = request.getParameter("place");
+		String areas = request.getParameter("areas");
+		
+		String college = request.getParameter("college");
+	
+		JSONObject json = new JSONObject();
+		try {
+			PrintWriter out = response.getWriter();
+			List<MajorEnroll> list = majorService.getMajor(place, areas, subject, batch, year, college);
+			json.put("data", list);
+			json.put("resultCode", 200);
+			out.write(json.toJSONString());
+			out.close();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+	@RequestMapping("/rank")
+	public void rank(HttpServletResponse response, HttpServletRequest request) {
+		response.setContentType("text/html; charset=utf-8");
+		response.setCharacterEncoding("utf-8");
+
+		String subject = request.getParameter("subject");
+		String batch = request.getParameter("batch");
+		String year = request.getParameter("year");
+		String place = request.getParameter("place");
+		String areas = request.getParameter("areas");
+		String rank = request.getParameter("rank");
+		rank = String.valueOf(Integer.valueOf(rank)-50);
+		String college = request.getParameter("college");
+		String major = request.getParameter("major");
+		JSONObject json = new JSONObject();
+		try {
+			PrintWriter out = response.getWriter();
+			List<MajorEnroll> list = majorService.rank(place, areas, subject, batch, year, college, rank, major);
+			json.put("size", list.size());
+			json.put("data", list);
+			json.put("resultCode", 200);
+			out.write(json.toJSONString());
+			out.close();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+	@RequestMapping("/getPositionCollege")
+	public void getPositionCollege(HttpServletResponse response, HttpServletRequest request) {
+		response.setContentType("text/html; charset=utf-8");
+		response.setCharacterEncoding("utf-8");
+
+		String year = request.getParameter("year");
+		String areas = request.getParameter("areas");
+
+		String college = request.getParameter("college");
+		String major = request.getParameter("major");
+		JSONObject json = new JSONObject();
+		try {
+			PrintWriter out = response.getWriter();
+			List<Position> list = positionService.findPosition(year, areas, college, major);
 			json.put("data", list);
 			json.put("resultCode", 200);
 			out.write(json.toJSONString());

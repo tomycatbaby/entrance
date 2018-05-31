@@ -24,4 +24,18 @@ public class MajorServiceImpl implements MajorService {
 		return this.majorDao.selectCount(major, areas, subject, batch, year);
 	}
 
+	public List<MajorEnroll> getCollege(String place, String areas, String subject, String batch, String year) {
+		return this.majorDao.getCollege(place, areas, subject, batch, year);
+	}
+
+	public List<MajorEnroll> getMajor(String place, String areas, String subject, String batch, String year,
+			String college) {
+		return this.majorDao.getMajor(place, areas, subject, batch, year, college);
+	}
+
+	public List<MajorEnroll> rank(String place, String areas, String subject, String batch, String year, String college,
+			String rank, String major) {
+		return this.majorDao.rank(place, areas, subject, batch, year, college, rank, major);
+	}
+
 }

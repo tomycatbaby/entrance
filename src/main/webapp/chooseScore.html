@@ -1,0 +1,200 @@
+
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/ui.css">
+<script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" charset="utf-8"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="css/index.css">
+<!-- 引入Vue -->
+<script src="js/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="js/index.js"></script>
+<title>Insert title here</title>
+</head>
+<style type="text/css">
+.column-cell-class-name-test2 {
+	background-color: #73d8ef;
+	font-weight: bold;
+}
+</style>
+<body>
+	<div id="home"
+		style="width: 300px; line-height: 90px; font-size: large; margin-bottom: 10px; float: left; margin-left: 50px;">
+		<a id="choose" class="manager" href="/maven/home.html">回到首页</a>
+	</div>
+	<form id="chooseForm" method="post" class="smart-green">
+		<h1>
+			Provide Choice<span>根据分数选学校.</span>
+		</h1>
+		<label> <span>考生文理科:</span><select id="subject" name="subject">
+				<option value="1">理科</option>
+				<option value="2">文科</option>
+		</select>
+		</label> <label> <span>考生所在地 :</span><select id="areas" name="areas">
+				<option value="1">重庆</option>
+				<option value="2">北京</option>
+				<option value="3">广东</option>
+				<option value="3">湖南</option>
+				<option value="5">黑龙江</option>
+				<option value="6">广西</option>
+				<option value="7">河南</option>
+				<option value="8">河北</option>
+				<option value="9">山东</option>
+				<option value="10">山西</option>
+				<option value="11">江苏</option>
+				<option value="12">江西</option>
+				<option value="13">西藏</option>
+				<option value="14">安徽</option>
+				<option value="15">浙江</option>
+				<option value="16">福建</option>
+				<option value="17">四川</option>
+				<option value="18">上海</option>
+				<option value="19">天津</option>
+				<option value="20">贵州</option>
+		</select>
+		</label> <label> <span>院校层次:</span><select id="batch" name="batch">
+				<option value="2">本科提前批</option>
+				<option value="1">本科一批</option>
+				<option value="2">本科二批</option>
+				<option value="2">专科一批</option>
+				<option value="2">专科二批</option>
+		</select>
+
+		</label> <label> <span>分数 :</span> <input id="score" type="text"
+			name="score" placeholder="考生分数" />
+		</label> <label> <span>年份:</span><select id="year" name="year">
+				<option value="1">2015</option>
+				<option value="2">2016</option>
+				<option value="3">2017</option>
+				
+		</select>
+		</label> <label> <span>院校所在地:</span><select id="place" name="place">
+				<option value="0">不限</option>
+				<option value="1">重庆</option>
+				<option value="2">北京</option>
+				<option value="3">广东</option>
+				<option value="3">湖南</option>
+				<option value="5">黑龙江</option>
+				<option value="6">广西</option>
+				<option value="7">河南</option>
+				<option value="8">河北</option>
+				<option value="9">山东</option>
+				<option value="10">山西</option>
+				<option value="11">江苏</option>
+				<option value="12">江西</option>
+				<option value="13">西藏</option>
+				<option value="14">安徽</option>
+				<option value="15">浙江</option>
+				<option value="16">福建</option>
+				<option value="17">四川</option>
+				<option value="18">上海</option>
+				<option value="19">天津</option>
+		</select>
+		</label> <label> <span>&nbsp;</span> <input type="button"
+			class="button" value="提交" onclick="chooseForm()" /> <span>&nbsp;</span>
+			<input type="reset" class="button" name="Reset" value="重置" /> <span>&nbsp;</span>
+
+		</label>
+
+	</form>
+	<div id="app" class="smart-table">
+		<v-table :width="720" :columns="columns" :table-data="tableData"
+			:multiple-sort="multipleSort"
+			:column-cell-class-name="columnCellClass" row-hover-color="#eee"
+			row-click-color="#edf7ff"></v-table>
+
+	</div>
+</body>
+<script type="text/javascript">
+function chooseForm() {
+	 var chooseForm = document.getElementById("chooseForm");
+	 chooseForm.style.display="none";
+	var areas = $("#areas option:selected").text();
+	var subject = $("#subject option:selected").text();
+	var batch = $("#batch option:selected").text();
+	var year = $("#year option:selected").text();
+	var place = $("#place option:selected").text();
+	var score = $("#score").val();
+	if (place == '不限') {
+		place = '';
+	}
+	vm=new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                tableData: [
+                
+                ],
+                multipleSort:false,
+                columns: [
+                   {field: 'custome', title:'序号', width: 50, titleAlign: 'center', columnAlign: 'center',
+                     formatter: function (rowData, index) {
+                     return index < 3 ? '<span style="color:red;font-weight: bold;">' + (index + 1) + '</span>' : index + 1
+                     }},
+                {field: 'year', title:'年份', width: 70, titleAlign: 'center',columnAlign:'center'},
+                {field: 'batch', title:'院校批次', width: 110, titleAlign: 'center',columnAlign:'center'},
+                {field: 'subject', title:'科属', width: 70, titleAlign: 'center',columnAlign:'center'},
+                {field: 'college', title:'院校名称', width: 140, titleAlign: 'center',columnAlign:'center'},
+                {field: 'areas', title:'院校所在地', width: 140, titleAlign: 'center',columnAlign:'center'},
+                {field: 'average', title:'平均分', width: 140, titleAlign: 'center',columnAlign:'center'}
+                ]
+            }
+        },
+        created:function(){
+        	$.ajax({
+    			type : "POST",
+    			dataType : "json",
+    			url : "/maven/entrance/choose",
+    			data : {
+    				areas : areas,
+    				subject : subject,
+    				batch : batch,
+    				year : year,
+    				score : score,
+    				place : place
+    			},
+    			success : function(result) {
+    				vm.tableData=sort(result.data);
+    			},
+    			error : function() {
+
+    			}
+    		});
+        },
+        methods:{
+            columnCellClass(rowIndex,columnName,rowData){
+                    // 给第二行设置className
+                    if (rowIndex%2 ===1){
+
+                        return 'column-cell-class-name-test2';
+                    }
+                }
+            }
+        })
+}
+
+//排序
+function sort(data) {
+
+	for (var i = 0; i < data.length; i++) {
+		var max = data[i];
+		var flag = i;
+		for(var j= i;j<data.length;j++){
+			if(data[j].average>max.average){
+				max = data[j];
+				flag = j;
+			}	
+		}
+		data[flag] = data[i];
+		data[i]=max;
+	}
+	return data;
+}
+	
+
+</script>
+</html>

@@ -11,5 +11,5 @@ public interface CollegeEnrollService {
 
 	public List<CollegeEnroll> searchBy(String college, String areas, String subject, String batch, String year);
 
-	public List<CollegeEnroll> choose(String place, String areas, String subject, String batch, String year);
+	public List<CollegeEnroll> choose(String place, String areas, String subject, String batch, String year,String score);
 }
